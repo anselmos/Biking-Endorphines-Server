@@ -99,3 +99,6 @@ ENV/
 # ignore all patch/diff git files
 *.patch
 *.diff
+
+# ignore sqlite3 databases:
+*.sqlite3
