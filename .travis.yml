@@ -11,10 +11,12 @@ env:
     matrix:
         - MAKE_TASK=pylint
         - MAKE_TASK=unittest
+        - MAKE_GH_PAGE_TASK=gh_pages
 
 
 script: 
     - "make $MAKE_TASK"
+    - "make $MAKE_GH_PAGE_TASK"
 branches:
     only:
         - gh-pages
