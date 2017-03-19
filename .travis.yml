@@ -15,3 +15,7 @@ env:
 
 script: 
     - "make $MAKE_TASK"
+branches:
+    only:
+        - gh-pages
+        - /.*/
