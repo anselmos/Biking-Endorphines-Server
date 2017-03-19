@@ -1,6 +1,12 @@
 
 rev=$(git rev-parse --short HEAD)
 
+if [ "$TRAVIS_BRANCH" != "master" ]
+then
+    echo "This commit was made against the $TRAVIS_BRANCH and not the master! No deploy!"
+    exit 0
+fi
+
 mkdir -p deployed_gh_pages/${rev}
 cd deployed_gh_pages/${rev}
 

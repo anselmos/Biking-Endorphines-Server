@@ -1,5 +1,3 @@
-DATE=$(shell `date +%Y-%m-%d`)
-
 requirements:
 	pip install -r requirements.txt
 pylint: requirements
