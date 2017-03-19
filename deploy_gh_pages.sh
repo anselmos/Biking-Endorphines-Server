@@ -1,4 +1,4 @@
-
+#!/bin/bash
 rev=$(git rev-parse --short HEAD)
 
 if [ "$TRAVIS_BRANCH" != "master" ]
