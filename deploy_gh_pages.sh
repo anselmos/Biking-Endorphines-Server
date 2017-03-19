@@ -12,7 +12,7 @@ git remote add upstream "https://$GH_TOKEN@github.com/anselmos/Biking-Endorphine
 git fetch upstream
 git reset upstream/gh-pages
 
-cp ../../generate_pyreverse/* .
+cp ../../generated_pyreverse/* .
 
 git add -A .
 git commit -m "rebuild pages at ${rev}"
