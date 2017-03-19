@@ -13,3 +13,10 @@ prepare_db: requirements
 
 runserver: prepare_db
 	python bikingendorphines/manage.py runserver 0.0.0.0:8000
+
+pyreverse: requirements
+	pyreverse -AS -o png --project=Biking-Endorphines-Web bikingendorphines/web/
+
+gh_pages: pyreverse
+	ls -alth classes_Biking-Endorphines-Web.png
+	ls -alth packages_Biking-Endorphines-Web.png

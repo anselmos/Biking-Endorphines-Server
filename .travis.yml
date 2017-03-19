@@ -6,8 +6,14 @@ python:
 install: "pip install -r requirements.txt"
 
 env:
-    - MAKE_TASK=pylint
-    - MAKE_TASK=unittest
+    global:
+        - secure: VPaTw1Tiv0jCERL0hxgYnY2Xjr0ECyJ9ujg52leIla7XFdv9L4pVAHZTG47hKHvzxExjN2rg9ocRp/Feui8lB9EA3sHV5RIvAp1yatznl+M3nseZobNG3uqTcpmyIYIjiMQ3C65wxETbLpYa0wOmmKeOmw14yroiMjTPHgSF6JSjxi9zkPTT5ZYsHwtDI8tt0lJxLUAVZh5jal4ceT+p+YWH0/PO/r5byltlrpDaYjcGeLMmbhUeSl7ug9AGaPlectEoCe8+O632YocC3ZEVyGwyfO7WO5T6vSy37NWd/hAGWntOc3pWw/qrnRJC3zRgeizAGtEYFKv71p7DjpVYJsA61WUsNq250brf7DJaqtFNBbZi96a8mK6oldagXfiTDZlEjl2pY9ZWqPiPQBnMdw9ENzbxs6ZFOhGeN2bNfEhtNQQEHxDcaTtHGOPcZszN8lNQ4wvmCAYn6Aqtf4EVL27Ex1FFoXDW3iz2H2gSyMWbHe7CW1KZOEq6ae66agROy4PFz7h1pmrTcTCNlKwJjguF/nt5k3EkahGsConIIUGv8FZVyeTgmXclKzqmdrwynwGF0/0laxIxHqHJYHgIoZq21D7TwxH4AV/+/j5eY6BQ4Jed6KZghoTC1zQjYJx3x+nZf9q4vRN0DjJ2p9LAdv58pH4guX0F0r9UtMSqJXE=
+    matrix:
+        - MAKE_TASK=pylint
+        - MAKE_TASK=unittest
+        - MAKE_GH_PAGES=gh_pages
+
 
 script: 
     - "make $MAKE_TASK"
+    - "make $MAKE_GH_PAGES"
