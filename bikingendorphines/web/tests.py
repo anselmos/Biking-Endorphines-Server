@@ -2,7 +2,6 @@
 Unit tests for web-application.
 """
 from django.test import TestCase
-import gpxpy
 
 from .models import User
 from .utils import GPXReader
