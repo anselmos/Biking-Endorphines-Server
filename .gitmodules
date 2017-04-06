@@ -1,0 +1,3 @@
+[submodule "androidapp"]
+	path = androidapp
+	url = https://github.com/anselmos/Biking-Endorphines-Android-App
