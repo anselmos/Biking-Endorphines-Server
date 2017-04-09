@@ -85,6 +85,22 @@ class GPXReader(object):
 
         return elevations
 
+    def get_lowest_elevation(self):
+        """
+        Returns information about lowest elevation from route
+        Returns None if not found any elevations!
+        """
+        return NotImplementedError()
+
+
+    def animal_figure_route(self):
+        """
+        Uses Points to compare route with animal shapes.
+        Returns information if this route looks similar to some animal or not.
+        Returns Name of animal from enumeration or None if none animal found.
+        """
+        return NotImplementedError()
+
 
 class EndomondoGPXReader(GPXReader):
     """

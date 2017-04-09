@@ -65,3 +65,45 @@ def test_get_elevations_len(test_data):
 
     elevations = gpxreader.get_elevations()
     assert len(elevations) == elevations_len
+
+def test_get_track_points(test_data):
+    """
+    Test if all track points are gathered
+    """
+
+def test_get_route_points(test_data):
+    """
+    Test if all route points are gathered
+    """
+    return NotImplementedError()
+
+def test_get_way_points(test_data):
+    """
+    Test if all way points are gathered
+    """
+    return NotImplementedError()
+
+def test_get_lowest_elevation(test_data):
+    """
+    Checks method for:
+    - If no elevations in route, method should return None.
+    - If elevations are equal or only one available, return None.
+    - If more then one elevation (different) available, return lowest.
+    """
+    return NotImplementedError()
+
+def test_get_highest_elevation(test_data):
+    """
+    Checks method for:
+    - If no elevations in route, method should return None.
+    - If elevations are equal or only one available, return None.
+    - If more then one elevation (different) available, return highest.
+    """
+    return NotImplementedError()
+
+def test_animal_figure_route(test_data):
+    """
+    Tests if method named "animal_figure_route" will return proper name of animal
+    for proper biking route.
+    """
+    return NotImplementedError()
