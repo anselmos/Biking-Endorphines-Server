@@ -39,7 +39,7 @@ class GPXReader(object):
         """
         points = []
         if len(self.__routes) > 0 and len(self.__routes) >= item_nb:
-            for point in self.__routes:
+            for point in self.__routes[item_nb].walk():
                 points.append(point)
         return points
 
@@ -49,7 +49,7 @@ class GPXReader(object):
         """
         points = []
         if len(self.__waypoints) > 0 and len(self.__waypoints) >= item_nb:
-            for point in self.__waypoints:
+            for point in self.__waypoints[item_nb].walk():
                 points.append(point)
         return points
 
@@ -74,11 +74,16 @@ class GPXReader(object):
         """
         Returns list of elevation per route list
         """
-        #pylint: disable=fixme
-        # TODO Check if this is not already handled somehow at gpxpy GPXTrackPoint!!
         elevations = []
         for point in self.get_points():
-            elevations.append(point.elevator())
+            #pylint: disable=fixme
+            # TODO - not sure if this will work, but let's check:
+            # This will check only first element from tupple that is a GPXTrackPoint,
+            # But what if it's not TrackPoint but a WayPoint ??
+            # will it be first element or second/third  ??
+            elevations.append(point[0].elevation)
+
+        return elevations
 
 
 class EndomondoGPXReader(GPXReader):
