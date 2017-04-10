@@ -70,6 +70,7 @@ def test_get_track_points(test_data):
     """
     Test if all track points are gathered
     """
+    return NotImplementedError()
 
 def test_get_route_points(test_data):
     """
@@ -107,3 +108,4 @@ def test_animal_figure_route(test_data):
     for proper biking route.
     """
     return NotImplementedError()
+
