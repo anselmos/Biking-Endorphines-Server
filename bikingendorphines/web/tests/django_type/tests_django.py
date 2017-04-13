@@ -3,7 +3,7 @@ Unit tests for web-application.
 """
 from django.test import TestCase
 
-from .models import User
+from web.models import User
 
 class UserTestCase(TestCase):
     """

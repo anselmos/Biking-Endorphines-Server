@@ -3,7 +3,65 @@ Utils module that contains all business logic that should not be at model/view o
 """
 import gpxpy
 
-class GPXReader(object):
+class AbstractGPXReader(object):
+    """
+    AbstractGPXReader - An Abstract Class containing most of methods that needs to be implemented.
+
+    I.e.
+    get_track_points(self, item_nb=0):
+    """
+
+    def get_track_points(self, item_nb=0):
+        """
+        Track points are gathered
+        """
+        raise NotImplementedError()
+
+    def get_route_points(self, item_nb=0):
+        """
+        Route points are gathered
+        """
+        raise NotImplementedError()
+
+    def get_way_points(self, item_nb=0):
+        """
+        Way points are gathered
+        """
+        raise NotImplementedError()
+
+    def get_lowest_elevation(self):
+        """
+        Returns information about lowest elevation from route
+        Returns None if not found any elevations!
+
+        Checks method for:
+        - If no elevations in route, method should return None.
+        - If elevations are equal or only one available, return None.
+        - If more then one elevation (different) available, return lowest.
+        """
+        raise NotImplementedError()
+
+    def get_highest_elevation(self):
+        """
+        Checks method for:
+        - If no elevations in route, method should return None.
+        - If elevations are equal or only one available, return None.
+        - If more then one elevation (different) available, return highest.
+        """
+        raise NotImplementedError()
+
+    def animal_figure_route(self):
+        """
+        Uses Points to compare route with animal shapes.
+        Returns information if this route looks similar to some animal or not.
+        Returns Name of animal from enumeration or None if none animal found.
+
+        Tests if method named "animal_figure_route" will return proper name of animal
+        for proper biking route.
+        """
+        return NotImplementedError()
+
+class GPXReader(AbstractGPXReader):
     """
     Class that is used for making tests with "super"
     Please refer to yt - Raymond Hettinger - Super considered super!
@@ -17,8 +75,8 @@ class GPXReader(object):
         # FIXME Check if this is best idea to leave parsing in constructor - in scope of performance
         # for now there is no better way I can find out.
         # This will go to issues.
-        self.__file_handle = self.set_file_handle(file_name)
-        self.__gpx_handle = self.parse_file()
+        self.set_file_handle(file_name)
+        self.parse_file()
         self.__tracks = self.__gpx_handle.tracks
         self.__routes = self.__gpx_handle.routes
         self.__waypoints = self.__gpx_handle.waypoints
@@ -51,7 +109,7 @@ class GPXReader(object):
         """
         Parses file name into gpx handle
         """
-        self.set_file_handle(gpxpy.parse(self.get_file_handle()))
+        self.set_gpx_handle(gpxpy.parse(self.get_file_handle()))
 
     def get_track_points(self, item_nb=0):
         """
@@ -114,22 +172,6 @@ class GPXReader(object):
             elevations.append(point[0].elevation)
 
         return elevations
-
-    def get_lowest_elevation(self):
-        """
-        Returns information about lowest elevation from route
-        Returns None if not found any elevations!
-        """
-        return NotImplementedError()
-
-
-    def animal_figure_route(self):
-        """
-        Uses Points to compare route with animal shapes.
-        Returns information if this route looks similar to some animal or not.
-        Returns Name of animal from enumeration or None if none animal found.
-        """
-        return NotImplementedError()
 
 
 class EndomondoGPXReader(GPXReader):
