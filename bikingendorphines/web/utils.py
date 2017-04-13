@@ -13,15 +13,45 @@ class GPXReader(object):
         """
         Constructor. Reads default information that can be read by gpx.
         """
-        self.file_handle = open(file_name)
         #pylint: disable=fixme
         # FIXME Check if this is best idea to leave parsing in constructor - in scope of performance
         # for now there is no better way I can find out.
         # This will go to issues.
-        self.__gpx_handle = gpxpy.parse(self.file_handle)
+        self.__file_handle = self.set_file_handle(file_name)
+        self.__gpx_handle = self.parse_file()
         self.__tracks = self.__gpx_handle.tracks
         self.__routes = self.__gpx_handle.routes
         self.__waypoints = self.__gpx_handle.waypoints
+
+    def get_gpx_handle(self):
+        """
+        Returns gpx handle
+        """
+        return self.__gpx_handle
+
+    def set_file_handle(self, file_name):
+        """
+        Returns file handle
+        """
+        self.__file_handle = open(file_name)
+
+    def get_file_handle(self):
+        """
+        Returns file handle
+        """
+        return self.__file_handle
+
+    def set_gpx_handle(self, gpx_handle):
+        """
+        Sets gpx handle
+        """
+        self.__gpx_handle = gpx_handle
+
+    def parse_file(self):
+        """
+        Parses file name into gpx handle
+        """
+        self.set_file_handle(gpxpy.parse(self.get_file_handle()))
 
     def get_track_points(self, item_nb=0):
         """

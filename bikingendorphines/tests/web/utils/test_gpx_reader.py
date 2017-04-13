@@ -13,21 +13,21 @@ from web.utils import GPXReader
 # TODO - find gpx file with all elements like TrackPoints, RoutePoints and WayPoints.
 
 @pytest.fixture
-def gpxreader_trackpoint():
+def gpxreader():
     """
     Creates trackpoint gpxreader
     """
-    return GPXReader('bikingendorphines/example_data/15212277.gpx')
+    return {"reader": GPXReader('bikingendorphines/example_data/15212277.gpx'), "elevation": 22}
 
 
-class AbstractGPXReaderTest(object):
+class BaseGPXReaderTest(object):
     """
     A Prof Of Concept for creating one generalized GPXReader test class.
     It will then be inherited by other classes that will use TrackPoints example data,
     Route Points data and Way Points data using pytest-fixtures.
     """
 
-    def test_get_points(self, gpxreader):
+    def test_get_points(self):
         """
         Tests if there will be data output from get_points.
 
@@ -35,26 +35,20 @@ class AbstractGPXReaderTest(object):
         - points exists for different types.
         - what will happen if types exists, but no data?
         """
-        points = []
-        for point in gpxreader.get_points():
-            points.append(point)
-        assert len(points) > 0
+        raise NotImplementedError()
 
-    def test_get_elevations(self, gpxreader):
+    def test_get_elevations(self):
         """
         Tests if all elevations will be returned from input element.
         Test should check if elements are TrackPoints Route Points or Way Points.
         """
-        elevations = gpxreader.get_elevations()
-        print len(elevations)
-        assert len(elevations) > 0
+        raise NotImplementedError()
 
-    def test_get_elevations_len(self, gpxreader, elevations_len):
+    def test_get_elevations_len(self, elevations_len):
         """
         Test if proper amount of elevations are read by get_elevations method.
         """
-        elevations = gpxreader.get_elevations()
-        assert len(elevations) == elevations_len
+        raise NotImplementedError()
 
     def test_get_track_points(self):
         """
@@ -99,9 +93,49 @@ class AbstractGPXReaderTest(object):
         """
         raise NotImplementedError()
 
+class AbstractGPXReaderTest(BaseGPXReaderTest):
+    """
+    Abstract Implementation of Base GPX Reader Test
+    """
+
+    def test_get_points(self):
+        """
+        Tests if there will be data output from get_points.
+
+        Test if:
+        - points exists for different types.
+        - what will happen if types exists, but no data?
+        """
+        points = []
+        for point in gpxreader().get_points():
+            points.append(point)
+        assert len(points) > 0
+
+    def test_get_elevations(self):
+        """
+        Tests if all elevations will be returned from input element.
+        Test should check if elements are TrackPoints Route Points or Way Points.
+        """
+        elevations = gpxreader().get_elevations()
+        print len(elevations)
+        assert len(elevations) > 0
+
+    def test_get_elevations_len(self, elevations_len):
+        """
+        Test if proper amount of elevations are read by get_elevations method.
+        """
+        elevations = gpxreader().get_elevations()
+        assert len(elevations) == elevations_len
+
+    def test_animal_figure_route(self):
+        """
+        Test implementation for animal figure route
+        """
+        raise NotImplementedError()
+
+@pytest.mark.usefixtures("gpxreader")
 class TestTrackPointGPXReader(AbstractGPXReaderTest):
     """
     Specific version of Abstract test-class that uses mainly TrackPoints gpx file for tests.
     """
-    def test_get_points(self, gpxreader_trackpoint):
-        super(TestTrackPointGPXReader, self).test_get_points(gpxreader_trackpoint)
+    pass
