@@ -1,10 +1,14 @@
 requirements:
 	pip install -r requirements.txt
+
 pylint: requirements
 	pylint --load-plugins pylint_django bikingendorphines/web --rcfile=.pylintrc 
 	pylint --load-plugins pylint_django bikingendorphines/tests --rcfile=.pylintrc 
 	pylint --load-plugins pylint_django bikingendorphines/bikingendorphines --rcfile=.pylintrc 
-unittest: prepare_db
+
+unittest_with_prepare: prepare_db unittest
+
+unittest:
 	cd bikingendorphines && python manage.py test
 
 prepare_db: requirements
