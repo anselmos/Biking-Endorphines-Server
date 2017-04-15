@@ -1,6 +1,3 @@
-system_deps:
-	apt-get install -y graphviz
-
 requirements:
 	pip install -r requirements.txt
 
