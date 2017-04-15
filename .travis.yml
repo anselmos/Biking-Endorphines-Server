@@ -4,7 +4,7 @@ python:
     - "2.7"
 
 before_install:
-    - "sudo apt-get install -y graphviz"
+    - "make system_deps"
 
 install:
     - "make requirements"
