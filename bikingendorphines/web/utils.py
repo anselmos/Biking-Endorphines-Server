@@ -50,6 +50,7 @@ class AbstractGPXReader(object):
         """
         raise NotImplementedError()
 
+    # pylint: disable=no-self-use
     def animal_figure_route(self):
         """
         Uses Points to compare route with animal shapes.
@@ -75,6 +76,8 @@ class GPXReader(AbstractGPXReader):
         # FIXME Check if this is best idea to leave parsing in constructor - in scope of performance
         # for now there is no better way I can find out.
         # This will go to issues.
+        self.__gpx_handle = None
+        self.__file_handle = None
         self.set_file_handle(file_name)
         self.parse_file()
         self.__tracks = self.__gpx_handle.tracks

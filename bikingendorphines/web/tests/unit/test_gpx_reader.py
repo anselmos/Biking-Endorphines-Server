@@ -3,7 +3,7 @@ Tests for GPXReader class
 """
 
 import unittest
-import pytest
+from nose_parameterized import parameterized
 
 from web.utils import GPXReader
 
@@ -20,12 +20,13 @@ class BaseGPXReaderTest(unittest.TestCase):
     Route Points data and Way Points data using pytest-fixtures.
     """
 
-    def setUp(self):
-        'setUp'
-        self.gpxreader = GPXReader('web/tests/example_data/fast_example.gpx')
-
-
-    def test_get_points(self):
+    @parameterized.expand([
+        ('web/tests/example_data/fast_example.gpx'),
+        ('web/tests/example_data/fast_example_trackpoints.gpx'),
+        ('web/tests/example_data/fast_example_waypoints.gpx'),
+        ('web/tests/example_data/fast_example_routepoints.gpx'),
+    ])
+    def test_get_points(self, gpxfile):
         """
         Tests if there will be data output from get_points.
 
@@ -33,24 +34,39 @@ class BaseGPXReaderTest(unittest.TestCase):
         - points exists for different types.
         - what will happen if types exists, but no data?
         """
+        gpxreader = GPXReader(gpxfile)
         points = []
-        for point in self.gpxreader.get_points():
+        for point in gpxreader.get_points():
             points.append(point)
         assert len(points) > 0
 
-    def test_get_elevations(self):
+    @parameterized.expand([
+        ('web/tests/example_data/fast_example.gpx'),
+        ('web/tests/example_data/fast_example_trackpoints.gpx'),
+        ('web/tests/example_data/fast_example_waypoints.gpx'),
+        ('web/tests/example_data/fast_example_routepoints.gpx'),
+    ])
+    def test_get_elevations(self, gpxfile):
         """
         Tests if all elevations will be returned from input element.
         Test should check if elements are TrackPoints Route Points or Way Points.
         """
-        elevations = self.gpxreader.get_elevations()
+        gpxreader = GPXReader(gpxfile)
+        elevations = gpxreader.get_elevations()
         assert len(elevations) > 0
 
-    def test_get_elevations_len(self, elevations_len=224):
+    @parameterized.expand([
+        ('web/tests/example_data/fast_example.gpx', 224),
+        ('web/tests/example_data/fast_example_trackpoints.gpx', 224),
+        ('web/tests/example_data/fast_example_waypoints.gpx', 224),
+        ('web/tests/example_data/fast_example_routepoints.gpx', 224),
+    ])
+    def test_get_elevations_len(self, gpxfile, elevations_len=224):
         """
         Test if proper amount of elevations are read by get_elevations method.
         """
-        elevations = self.gpxreader.get_elevations()
+        gpxreader = GPXReader(gpxfile)
+        elevations = gpxreader.get_elevations()
         assert len(elevations) == elevations_len
 
 if __name__ == '__main__':
