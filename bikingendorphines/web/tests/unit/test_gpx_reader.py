@@ -7,11 +7,9 @@ from nose_parameterized import parameterized
 
 from web.utils import GPXReader
 
-# TODO - find gpx file with : only TrackPoints
-# TODO - find gpx file with : only Route Points
-# TODO - find gpx file with : only Way Points
-
-# TODO - find gpx file with all elements like TrackPoints, RoutePoints and WayPoints.
+# pylint: disable=fixme
+# TODO - create gpx file with all elements like TrackPoints, RoutePoints and WayPoints.
+# (unlikely to happen, need to check)
 
 class BaseGPXReaderTest(unittest.TestCase):
     """
