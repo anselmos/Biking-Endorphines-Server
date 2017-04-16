@@ -140,7 +140,7 @@ class GPXReader(AbstractGPXReader):
         """
         points = []
         if len(self.__waypoints) > 0 and len(self.__waypoints) >= item_nb:
-            for point in self.__waypoints[item_nb].walk():
+            for point in self.__waypoints:
                 points.append(point)
         return points
 
@@ -156,7 +156,7 @@ class GPXReader(AbstractGPXReader):
             return self.get_track_points()
         elif len(self.__routes) > 0 and self.__routes[item_nb].get_points_no() > 0:
             return self.get_route_points()
-        elif len(self.__waypoints) > 0 and self.__waypoints[item_nb].get_points_no() > 0:
+        elif len(self.__waypoints) > 0 and self.__waypoints > 0:
             return self.get_way_points()
         else:
             return []
@@ -167,12 +167,12 @@ class GPXReader(AbstractGPXReader):
         """
         elevations = []
         for point in self.get_points():
-            #pylint: disable=fixme
-            # TODO - not sure if this will work, but let's check:
-            # This will check only first element from tupple that is a GPXTrackPoint,
-            # But what if it's not TrackPoint but a WayPoint ??
-            # will it be first element or second/third  ??
-            elevations.append(point[0].elevation)
+            # pylint: disable=fixme
+            # TODO fix this with own point implementation in future.
+            if isinstance(point, gpxpy.gpx.GPXWaypoint):
+                elevations.append(point.elevation)
+            else:
+                elevations.append(point[0].elevation)
 
         return elevations
 
