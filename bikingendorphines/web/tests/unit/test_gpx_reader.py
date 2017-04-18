@@ -15,6 +15,7 @@ LIST_THREE_MAIN_EXAMPLES = [
     (DEFAULT_TESTS_EXAMPLES_PATH+ 'fast_example_waypoints.gpx'),
     (DEFAULT_TESTS_EXAMPLES_PATH+ 'fast_example_routepoints.gpx'),
 ]
+
 LIST_THREE_MAIN_EXAMPLES_WITH_LEN = [(element, 224) for element in LIST_THREE_MAIN_EXAMPLES]
 
 class BaseGPXReaderTest(unittest.TestCase):
@@ -63,8 +64,8 @@ class BaseGPXReaderTest(unittest.TestCase):
 
     #pylint: disable=invalid-name
     @parameterized.expand([
-        ('web/tests/example_data/fast_example_empty_points.gpx'),
-        ('web/tests/example_data/fast_example_points_no_elevation.gpx'),
+        (DEFAULT_TESTS_EXAMPLES_PATH+'fast_example_empty_points.gpx'),
+        (DEFAULT_TESTS_EXAMPLES_PATH+'fast_example_points_no_elevation.gpx'),
     ])
     def test_given_none_or_empty_elevation_return_none(self, gpxfile=DEFAULT_GPXFILE_SAMPLE):
         """
