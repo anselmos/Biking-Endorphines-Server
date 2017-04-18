@@ -3,7 +3,46 @@ Utils module that contains all business logic that should not be at model/view o
 """
 import gpxpy
 
-class GPXReader(object):
+class AbstractGPXReader(object):
+    """
+    AbstractGPXReader - An Abstract Class containing most of methods that needs to be implemented.
+
+    I.e.
+    get_track_points(self, item_nb=0):
+    """
+
+    def get_track_points(self, item_nb=0):
+        """
+        Track points are gathered
+        """
+        raise NotImplementedError()
+
+    def get_route_points(self, item_nb=0):
+        """
+        Route points are gathered
+        """
+        raise NotImplementedError()
+
+    def get_way_points(self, item_nb=0):
+        """
+        Way points are gathered
+        """
+        raise NotImplementedError()
+
+    def get_lowest_elevation(self):
+        """
+        Returns information about lowest elevation from route
+        Returns None if not found any elevations!
+
+        Checks method for:
+        - If no elevations in route, method should return None.
+        - If elevations are equal or only one available, return None.
+        - If more then one elevation (different) available, return lowest.
+        """
+        raise NotImplementedError()
+
+
+class GPXReader(AbstractGPXReader):
     """
     Class that is used for making tests with "super"
     Please refer to yt - Raymond Hettinger - Super considered super!
@@ -13,15 +52,51 @@ class GPXReader(object):
         """
         Constructor. Reads default information that can be read by gpx.
         """
-        self.file_handle = open(file_name)
         #pylint: disable=fixme
         # FIXME Check if this is best idea to leave parsing in constructor - in scope of performance
         # for now there is no better way I can find out.
         # This will go to issues.
-        self.__gpx_handle = gpxpy.parse(self.file_handle)
+        self.__gpx_handle = None
+        self.__file_handle = None
+        self.set_file_handle(file_name)
+        self.parse_file()
         self.__tracks = self.__gpx_handle.tracks
         self.__routes = self.__gpx_handle.routes
         self.__waypoints = self.__gpx_handle.waypoints
+
+    def get_gpx_handle(self):
+        """
+        Returns gpx handle
+        """
+        return self.__gpx_handle
+
+    def set_file_handle(self, file_name):
+        """
+        Returns file handle
+        """
+        self.__file_handle = open(file_name)
+
+    def get_file_handle(self):
+        """
+        Returns file handle
+        """
+        return self.__file_handle
+
+    def set_gpx_handle(self, gpx_handle):
+        """
+        Sets gpx handle
+        """
+        self.__gpx_handle = gpx_handle
+
+    def process_gpx_file(self, gpxfile):
+        """ A Process gpx file and change constructor gpx_handle """
+        self.set_gpx_handle(gpxpy.parse(open(gpxfile)))
+
+    def parse_file(self):
+        """
+        Parses file name into gpx handle
+        """
+        self.set_gpx_handle(gpxpy.parse(self.get_file_handle()))
 
     def get_track_points(self, item_nb=0):
         """
@@ -39,7 +114,7 @@ class GPXReader(object):
         """
         points = []
         if len(self.__routes) > 0 and len(self.__routes) >= item_nb:
-            for point in self.__routes:
+            for point in self.__routes[item_nb].walk():
                 points.append(point)
         return points
 
@@ -65,7 +140,7 @@ class GPXReader(object):
             return self.get_track_points()
         elif len(self.__routes) > 0 and self.__routes[item_nb].get_points_no() > 0:
             return self.get_route_points()
-        elif len(self.__waypoints) > 0 and self.__waypoints[item_nb].get_points_no() > 0:
+        elif len(self.__waypoints) > 0 and self.__waypoints > 0:
             return self.get_way_points()
         else:
             return []
@@ -74,11 +149,20 @@ class GPXReader(object):
         """
         Returns list of elevation per route list
         """
-        #pylint: disable=fixme
-        # TODO Check if this is not already handled somehow at gpxpy GPXTrackPoint!!
         elevations = []
         for point in self.get_points():
-            elevations.append(point.elevator())
+            # pylint: disable=fixme
+            # TODO fix this with own point implementation in future.
+            if isinstance(point, gpxpy.gpx.GPXWaypoint):
+                elevations.append(point.elevation)
+            else:
+                elevations.append(point[0].elevation)
+
+        return elevations
+
+    def get_lowest_elevation(self):
+
+        raise NotImplementedError()
 
 
 class EndomondoGPXReader(GPXReader):
@@ -91,4 +175,7 @@ class EndomondoGPXReader(GPXReader):
         # re-establishment of elevation if not properly assembled by android -application!
     - routes that looks like some animal ?? :D crazy ideas are the best!
     """
-    pass
+
+    def get_lowest_elevation(self):
+
+        raise NotImplementedError()
