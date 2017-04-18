@@ -88,10 +88,6 @@ class GPXReader(AbstractGPXReader):
         """
         self.__gpx_handle = gpx_handle
 
-    def process_gpx_file(self, gpxfile):
-        """ A Process gpx file and change constructor gpx_handle """
-        self.set_gpx_handle(gpxpy.parse(open(gpxfile)))
-
     def parse_file(self):
         """
         Parses file name into gpx handle
