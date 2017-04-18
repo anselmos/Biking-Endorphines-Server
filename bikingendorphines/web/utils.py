@@ -160,6 +160,8 @@ class GPXReader(AbstractGPXReader):
 
         if len(self.get_elevations()) <= 0:
             return
+        if self.get_elevations()[0] == self.get_elevations()[1]:
+            return
         return min(self.get_elevations())
 
 class EndomondoGPXReader(GPXReader):
