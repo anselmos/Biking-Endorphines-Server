@@ -90,5 +90,15 @@ class BaseGPXReaderTest(unittest.TestCase):
         )
         self.assert_lowest_elevation_equals(None)
 
+    def test_given_two_different_points_return_lowest(self):
+        """
+        Tests for get_lowest_elevation
+        """
+        self.gpxreader = GPXReader(
+            DEFAULT_TESTS_EXAMPLES_PATH + \
+            "get_lowest_elevation_two_different_points.gpx"
+        )
+        self.assert_lowest_elevation_equals(102.0)
+
 if __name__ == '__main__':
     unittest.main()
