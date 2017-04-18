@@ -66,14 +66,14 @@ class BaseGPXReaderTest(unittest.TestCase):
 
     @parameterized.expand([
         ('web/tests/example_data/fast_example_empty_points.gpx'),
+        ('web/tests/example_data/fast_example_points_no_elevation.gpx'),
     ])
-    def test_get_lowest_elevation(self, gpxfile=DEFAULT_GPXFILE_SAMPLE):
+    def test_given_none_or_empty_elevation_return_none(self, gpxfile=DEFAULT_GPXFILE_SAMPLE):
         """
         Tests for get_lowest_elevation
         """
         gpxreader = GPXReader(gpxfile)
-        if len(gpxreader.get_elevations()) <= 0:
-            self.assertEqual(gpxreader.get_lowest_elevation(), None)
+        self.assertEqual(gpxreader.get_lowest_elevation(), None)
 
 if __name__ == '__main__':
     unittest.main()

@@ -159,7 +159,7 @@ class GPXReader(AbstractGPXReader):
     def get_lowest_elevation(self):
 
         if len(self.get_elevations()) <= 0:
-            return None
+            return
 
 
 class EndomondoGPXReader(GPXReader):
