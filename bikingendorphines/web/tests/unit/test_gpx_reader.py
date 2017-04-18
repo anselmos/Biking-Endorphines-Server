@@ -24,6 +24,8 @@ class BaseGPXReaderTest(unittest.TestCase):
     It will then be inherited by other classes that will use TrackPoints example data,
     Route Points data and Way Points data using pytest-fixtures.
     """
+    def setUp(self):
+        self.gpxreader = None # fixes problem with pylint gpxreader defined outside constructor.
 
     @parameterized.expand(LIST_THREE_MAIN_EXAMPLES)
     def test_get_points(self, gpxfile=DEFAULT_GPXFILE_SAMPLE):
@@ -62,6 +64,10 @@ class BaseGPXReaderTest(unittest.TestCase):
         elevations = gpxreader.get_elevations()
         self.assertEqual(len(elevations), elevations_len)
 
+    def assert_lowest_elevation_equals(self, expected):
+        " Assertion for Equality of get_lowest_elevation with Expected"
+        self.assertEqual(self.gpxreader.get_lowest_elevation(), expected)
+
     #pylint: disable=invalid-name
     @parameterized.expand([
         (DEFAULT_TESTS_EXAMPLES_PATH+'fast_example_empty_points.gpx'),
@@ -71,19 +77,18 @@ class BaseGPXReaderTest(unittest.TestCase):
         """
         Tests for get_lowest_elevation
         """
-        gpxreader = GPXReader(gpxfile)
-        self.assertEqual(gpxreader.get_lowest_elevation(), None)
+        self.gpxreader = GPXReader(gpxfile)
+        self.assert_lowest_elevation_equals(None)
 
     def test_given_one_available_elevation_return_none(self):
         """
         Tests for get_lowest_elevation
         """
-        gpxreader = GPXReader(
+        self.gpxreader = GPXReader(
             DEFAULT_TESTS_EXAMPLES_PATH + \
             "get_lowest_elevation_one_elevation_available.gpx"
         )
-        self.assertEqual(gpxreader.get_lowest_elevation(), None)
-    #pylint: enable=invalid-name
+        self.assert_lowest_elevation_equals(None)
 
 if __name__ == '__main__':
     unittest.main()
