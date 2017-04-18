@@ -73,6 +73,16 @@ class BaseGPXReaderTest(unittest.TestCase):
         """
         gpxreader = GPXReader(gpxfile)
         self.assertEqual(gpxreader.get_lowest_elevation(), None)
+
+    def test_given_one_available_elevation_return_none(self):
+        """
+        Tests for get_lowest_elevation
+        """
+        gpxreader = GPXReader(
+            DEFAULT_TESTS_EXAMPLES_PATH + \
+            "get_lowest_elevation_one_elevation_available.gpx"
+        )
+        self.assertEqual(gpxreader.get_lowest_elevation(), None)
     #pylint: enable=invalid-name
 
 if __name__ == '__main__':
