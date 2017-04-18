@@ -41,26 +41,6 @@ class AbstractGPXReader(object):
         """
         raise NotImplementedError()
 
-    def get_highest_elevation(self):
-        """
-        Checks method for:
-        - If no elevations in route, method should return None.
-        - If elevations are equal or only one available, return None.
-        - If more then one elevation (different) available, return highest.
-        """
-        raise NotImplementedError()
-
-    # pylint: disable=no-self-use
-    def animal_figure_route(self):
-        """
-        Uses Points to compare route with animal shapes.
-        Returns information if this route looks similar to some animal or not.
-        Returns Name of animal from enumeration or None if none animal found.
-
-        Tests if method named "animal_figure_route" will return proper name of animal
-        for proper biking route.
-        """
-        return NotImplementedError()
 
 class GPXReader(AbstractGPXReader):
     """
@@ -107,6 +87,10 @@ class GPXReader(AbstractGPXReader):
         Sets gpx handle
         """
         self.__gpx_handle = gpx_handle
+
+    def process_gpx_file(self, gpxfile):
+        """ A Process gpx file and change constructor gpx_handle """
+        self.set_gpx_handle(gpxpy.parse(open(gpxfile)))
 
     def parse_file(self):
         """
@@ -176,6 +160,10 @@ class GPXReader(AbstractGPXReader):
 
         return elevations
 
+    def get_lowest_elevation(self):
+
+        raise NotImplementedError()
+
 
 class EndomondoGPXReader(GPXReader):
     """
@@ -187,4 +175,7 @@ class EndomondoGPXReader(GPXReader):
         # re-establishment of elevation if not properly assembled by android -application!
     - routes that looks like some animal ?? :D crazy ideas are the best!
     """
-    pass
+
+    def get_lowest_elevation(self):
+
+        raise NotImplementedError()
