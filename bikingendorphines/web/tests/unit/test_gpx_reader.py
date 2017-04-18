@@ -15,12 +15,7 @@ LIST_THREE_MAIN_EXAMPLES = [
     (DEFAULT_TESTS_EXAMPLES_PATH+ 'fast_example_waypoints.gpx'),
     (DEFAULT_TESTS_EXAMPLES_PATH+ 'fast_example_routepoints.gpx'),
 ]
-
-LIST_THREE_MAIN_EXAMPLES_WITH_LEN = [
-    (DEFAULT_TESTS_EXAMPLES_PATH+ 'fast_example_trackpoints.gpx', 224),
-    (DEFAULT_TESTS_EXAMPLES_PATH+ 'fast_example_waypoints.gpx', 224),
-    (DEFAULT_TESTS_EXAMPLES_PATH+ 'fast_example_routepoints.gpx', 224),
-]
+LIST_THREE_MAIN_EXAMPLES_WITH_LEN = [(element, 224) for element in LIST_THREE_MAIN_EXAMPLES]
 
 class BaseGPXReaderTest(unittest.TestCase):
     """
@@ -45,8 +40,8 @@ class BaseGPXReaderTest(unittest.TestCase):
         self.assertGreater(len(points), 0)
 
     @parameterized.expand(
-            LIST_THREE_MAIN_EXAMPLES \
-            + [(DEFAULT_TESTS_EXAMPLES_PATH+ 'fast_example.gpx')]
+        LIST_THREE_MAIN_EXAMPLES \
+        + [(DEFAULT_TESTS_EXAMPLES_PATH+ 'fast_example.gpx')]
     )
     def test_get_elevations(self, gpxfile=DEFAULT_GPXFILE_SAMPLE):
         """
@@ -66,6 +61,7 @@ class BaseGPXReaderTest(unittest.TestCase):
         elevations = gpxreader.get_elevations()
         self.assertEqual(len(elevations), elevations_len)
 
+    #pylint: disable=invalid-name
     @parameterized.expand([
         ('web/tests/example_data/fast_example_empty_points.gpx'),
         ('web/tests/example_data/fast_example_points_no_elevation.gpx'),
@@ -76,6 +72,7 @@ class BaseGPXReaderTest(unittest.TestCase):
         """
         gpxreader = GPXReader(gpxfile)
         self.assertEqual(gpxreader.get_lowest_elevation(), None)
+    #pylint: enable=invalid-name
 
 if __name__ == '__main__':
     unittest.main()
