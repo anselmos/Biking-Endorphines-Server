@@ -160,7 +160,7 @@ class GPXReader(AbstractGPXReader):
 
         if len(self.get_elevations()) <= 0:
             return
-
+        return min(self.get_elevations())
 
 class EndomondoGPXReader(GPXReader):
     """
