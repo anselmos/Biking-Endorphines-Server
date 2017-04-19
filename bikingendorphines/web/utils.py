@@ -157,10 +157,13 @@ class GPXReader(AbstractGPXReader):
         return elevations
 
     def get_lowest_elevation(self):
+        group_elevation = {}
+        for elevation in self.get_elevations():
+            group_elevation[elevation] = elevation
 
-        if len(self.get_elevations()) <= 0:
+        if len(group_elevation.keys()) == 0:
             return
-        if self.get_elevations()[0] == self.get_elevations()[1]:
+        if len(group_elevation.keys()) == 1:
             return
         return min(self.get_elevations())
 
