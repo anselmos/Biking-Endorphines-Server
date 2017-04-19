@@ -159,13 +159,14 @@ class GPXReader(AbstractGPXReader):
     def get_lowest_elevation(self):
         group_elevation = {}
         for elevation in self.get_elevations():
-            group_elevation[elevation] = elevation
+            if elevation:
+                group_elevation[elevation] = elevation
 
         if len(group_elevation.keys()) == 0:
             return
         if len(group_elevation.keys()) == 1:
             return
-        return min(self.get_elevations())
+        return min(group_elevation.keys())
 
 class EndomondoGPXReader(GPXReader):
     """
