@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from api import views
 
 #pylint: disable=invalid-name
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^api/user/$', views.UserList.as_view()),
 ]
