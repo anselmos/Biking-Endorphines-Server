@@ -13,6 +13,9 @@ class UserList(APIView):
     List all User's, or create a new snippet
     """
 
+    #pylint: disable=redefined-builtin
+    #pylint: disable=unused-argument
+    #pylint: disable=no-self-use
     def get(self, request, format=None):
         "GET"
         users = User.objects.all()
