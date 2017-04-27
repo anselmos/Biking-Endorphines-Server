@@ -11,7 +11,7 @@ pylint:
 unittest_all: prepare_db unittest
 
 unittest:
-	cd bikingendorphines && python manage.py test
+	cd bikingendorphines && python manage.py test -v 2
 
 prepare_db_all: requirements prepare
 

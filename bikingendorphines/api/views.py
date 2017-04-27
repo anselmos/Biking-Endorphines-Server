@@ -1,23 +1,20 @@
 """
 Views
 """
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from rest_framework import generics
 
 from api.serializers import UserSerializer
 from web.models import User
 
 
-class UserList(APIView):
+# pylint: disable=too-many-ancestors
+class UserList(generics.ListCreateAPIView):
     """
-    List all User's, or create a new snippet
-    """
+    get:
+    Return a list of all existing users.
 
-    #pylint: disable=redefined-builtin
-    #pylint: disable=unused-argument
-    #pylint: disable=no-self-use
-    def get(self, request, format=None):
-        "GET"
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
+    post:
+    Create a new user instance.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
