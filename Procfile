@@ -1,1 +1,1 @@
-web: gunicorn {{ bikingendorphines }}.wsgi --log-file -
+web: gunicorn bikingendorphines/bikingendorphines.wsgi --log-file -
