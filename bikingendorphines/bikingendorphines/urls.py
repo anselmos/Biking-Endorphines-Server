@@ -15,8 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from api import views
+from rest_framework.documentation import include_docs_urls
 
 #pylint: disable=invalid-name
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^api/user/$', views.UserList.as_view()),
+    url(r'^api/user/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
+    url(r'^docs/', include_docs_urls(title='API Documentation')),
 ]

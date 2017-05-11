@@ -95,6 +95,7 @@ ENV/
 
 # ignore .swp VIM temporary files:
 *.swp
+*.swo
 
 # ignore all patch/diff git files
 *.patch

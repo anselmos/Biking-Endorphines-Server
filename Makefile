@@ -4,13 +4,14 @@ requirements:
 pylint_all: requirements pylint
 
 pylint:
-	pylint bikingendorphines/web --rcfile=.pylintrc 
-	pylint bikingendorphines/bikingendorphines --rcfile=.pylintrc 
+	pylint --load-plugins pylint_django bikingendorphines/web --rcfile=.pylintrc 
+	pylint --load-plugins pylint_django bikingendorphines/api --rcfile=.pylintrc 
+	pylint --load-plugins pylint_django bikingendorphines/bikingendorphines --rcfile=.pylintrc 
 
 unittest_all: prepare_db unittest
 
 unittest:
-	cd bikingendorphines && python manage.py test
+	cd bikingendorphines && python manage.py test -v 2
 
 prepare_db_all: requirements prepare
 
