@@ -88,10 +88,6 @@ class GPXReader(AbstractGPXReader):
         """
         self.__gpx_handle = gpx_handle
 
-    def process_gpx_file(self, gpxfile):
-        """ A Process gpx file and change constructor gpx_handle """
-        self.set_gpx_handle(gpxpy.parse(open(gpxfile)))
-
     def parse_file(self):
         """
         Parses file name into gpx handle
@@ -161,9 +157,16 @@ class GPXReader(AbstractGPXReader):
         return elevations
 
     def get_lowest_elevation(self):
+        group_elevation = {}
+        for elevation in self.get_elevations():
+            if elevation:
+                group_elevation[elevation] = elevation
 
-        raise NotImplementedError()
-
+        if len(group_elevation.keys()) == 0:
+            return
+        if len(group_elevation.keys()) == 1:
+            return
+        return min(group_elevation.keys())
 
 class EndomondoGPXReader(GPXReader):
     """
