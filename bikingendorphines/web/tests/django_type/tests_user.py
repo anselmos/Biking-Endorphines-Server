@@ -17,8 +17,10 @@ class UserModelTestCase(GenericModelTestCase):
             return "Underweight"
         if bmi > 18.5 and bmi <= 24.9:
             return "Normal weight"
-        if bmi > 24.9:
+        if bmi > 24.9 and bmi <= 29.9:
             return "Overweight"
+        if bmi > 29.9:
+            return "Obesity"
 
     def assert_bmi_health(self, input, expected):
         assert self.bmi_health_name(input) == expected
