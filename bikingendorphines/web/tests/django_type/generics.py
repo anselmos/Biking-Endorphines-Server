@@ -28,4 +28,5 @@ class GenericModelTestCase(TestCase):
         assert sorted(set(fields_in_model).intersection(fields)) == sorted(fields)
 
     def test_fields(self):
+        """ Uses asserting fields for checking with naming convention of django-type """
         self.assert_fields(self.fields)
