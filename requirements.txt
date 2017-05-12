@@ -12,13 +12,16 @@ coreapi==2.3.0
 coreapi-cli==1.0.6
 coreschema==0.0.4
 djangorestframework==3.6.2
+funcsigs==1.0.2
 gpxpy==1.1.2
 isort==4.2.5
 itypes==1.1.0
 lazy-object-proxy==1.2.2
 mccabe==0.6.1
+mock==2.0.0
 packaging==16.8
 parameterized==0.6.1
+pbr==3.0.0
 py==1.4.33
 pylint==1.6.5
 pylint-django==0.7.2
@@ -30,4 +33,3 @@ six==1.10.0
 uritemplate==3.0.0
 wrapt==1.10.8
 wsgiref==0.1.2
-gunicorn==19.6.0

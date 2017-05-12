@@ -1,6 +1,8 @@
 """
 Unit tests for User model
 """
+from mock import MagicMock
+
 from web.models import User
 from web.tests.django_type.generics import GenericModelTestCase
 
@@ -10,11 +12,17 @@ class UserModelTestCase(GenericModelTestCase):
     cls = User
     fields = ['id', 'name', 'surname', 'weight', 'height', 'bmi']
 
+    def setUp(self):
+        """SetUp"""
+        self.user = User()
 
-    def assert_bmi_health(self, input, expected):
-        assert User().bmi_health_name(input) == expected
+    def assert_bmi_health(self, bmi, expected):
+        """ Asserts BMI health name"""
+        self.user.bmi = MagicMock(return_value=bmi)
+        assert self.user.bmi_health_name() == expected
 
     def test_bmi_health_name(self):
+        """ tests for bmi_health_name method """
         self.assert_bmi_health(-1, None)
         self.assert_bmi_health(0, "Underweight")
         self.assert_bmi_health(1, "Underweight")

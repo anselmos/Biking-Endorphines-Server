@@ -28,16 +28,19 @@ class User(models.Model):
         """
         return (self.weight / (self.height * self.height)) * 10000
 
-    def bmi_health_name(self, bmi):
-        if bmi < 0:
+    def bmi_health_name(self):
+        """
+        BMI Health Name - Returns proper naming for value of BMI
+        """
+        if self.bmi() < 0:
             return None
-        if bmi >= 0 and bmi <= 18.5:
+        if self.bmi() >= 0 and self.bmi() <= 18.5:
             return "Underweight"
-        if bmi > 18.5 and bmi <= 24.9:
+        if self.bmi() > 18.5 and self.bmi() <= 24.9:
             return "Normal weight"
-        if bmi > 24.9 and bmi <= 29.9:
+        if self.bmi() > 24.9 and self.bmi() <= 29.9:
             return "Overweight"
-        if bmi > 29.9:
+        if self.bmi() > 29.9:
             return "Obesity"
 
 
