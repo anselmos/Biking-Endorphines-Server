@@ -3,8 +3,6 @@ Models for web application
 """
 from __future__ import unicode_literals
 
-# disabling because this import will be used in future
-# pylint: disable=unused-import
 from django.db import models
 
 class User(models.Model):
@@ -27,6 +25,21 @@ class User(models.Model):
         Body Mass Index calculator simplified to number
         """
         return (self.weight / (self.height * self.height)) * 10000
+
+    def bmi_health_name(self):
+        """
+        BMI Health Name - Returns proper naming for value of BMI
+        """
+        if self.bmi() < 0:
+            return None
+        if self.bmi() >= 0 and self.bmi() <= 18.5:
+            return "Underweight"
+        if self.bmi() > 18.5 and self.bmi() <= 24.9:
+            return "Normal weight"
+        if self.bmi() > 24.9 and self.bmi() <= 29.9:
+            return "Overweight"
+        if self.bmi() > 29.9:
+            return "Obesity"
 
 
 class Route(models.Model):
