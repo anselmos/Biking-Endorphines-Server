@@ -16,8 +16,11 @@ class UserModelTestCase(GenericModelTestCase):
         if bmi >= 0:
             return "Underweight"
 
+    def assert_bmi_health(self, input, expected):
+        assert self.bmi_health_name(input) == expected
+
     def test_bmi_health_name(self):
-        assert self.bmi_health_name(-1) == None
-        assert self.bmi_health_name(0) == "Underweight"
-        assert self.bmi_health_name(1) == "Underweight"
-        assert self.bmi_health_name(18.5) == "Underweight"
+        self.assert_bmi_health(-1, None)
+        self.assert_bmi_health(0, "Underweight")
+        self.assert_bmi_health(1, "Underweight")
+        self.assert_bmi_health(18.5, "Underweight")
