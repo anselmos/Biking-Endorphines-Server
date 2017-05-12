@@ -24,3 +24,4 @@ class UserModelTestCase(GenericModelTestCase):
         self.assert_bmi_health(0, "Underweight")
         self.assert_bmi_health(1, "Underweight")
         self.assert_bmi_health(18.5, "Underweight")
+        self.assert_bmi_health(18.6, "Normal weight")
