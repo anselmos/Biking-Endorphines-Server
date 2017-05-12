@@ -28,6 +28,18 @@ class User(models.Model):
         """
         return (self.weight / (self.height * self.height)) * 10000
 
+    def bmi_health_name(self, bmi):
+        if bmi < 0:
+            return None
+        if bmi >= 0 and bmi <= 18.5:
+            return "Underweight"
+        if bmi > 18.5 and bmi <= 24.9:
+            return "Normal weight"
+        if bmi > 24.9 and bmi <= 29.9:
+            return "Overweight"
+        if bmi > 29.9:
+            return "Obesity"
+
 
 class Route(models.Model):
     """

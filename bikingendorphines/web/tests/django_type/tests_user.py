@@ -10,20 +10,9 @@ class UserModelTestCase(GenericModelTestCase):
     cls = User
     fields = ['id', 'name', 'surname', 'weight', 'height', 'bmi']
 
-    def bmi_health_name(self, bmi):
-        if bmi < 0:
-            return None
-        if bmi >= 0 and bmi <= 18.5:
-            return "Underweight"
-        if bmi > 18.5 and bmi <= 24.9:
-            return "Normal weight"
-        if bmi > 24.9 and bmi <= 29.9:
-            return "Overweight"
-        if bmi > 29.9:
-            return "Obesity"
 
     def assert_bmi_health(self, input, expected):
-        assert self.bmi_health_name(input) == expected
+        assert User().bmi_health_name(input) == expected
 
     def test_bmi_health_name(self):
         self.assert_bmi_health(-1, None)
