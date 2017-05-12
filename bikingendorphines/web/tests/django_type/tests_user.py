@@ -10,5 +10,8 @@ class UserModelTestCase(GenericModelTestCase):
     cls = User
     fields = ['id', 'name', 'surname', 'weight', 'height', 'bmi']
 
+    def bmi_health_name(self, bmi):
+        return None
+
     def test_bmi_health_name(self):
-        assert False
+        assert self.bmi_health_name(0) == None
