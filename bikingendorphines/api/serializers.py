@@ -10,6 +10,7 @@ class UserSerializer(serializers.Serializer):
     """
     #pylint: disable=invalid-name
     id = serializers.IntegerField(required=True)
+    #enable
     name = serializers.CharField(required=False, allow_blank=True, max_length=50)
     surname = serializers.CharField(required=False, allow_blank=True, max_length=100)
     weight = serializers.IntegerField(required=False, default=0)

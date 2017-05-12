@@ -52,10 +52,6 @@ class GPXReader(AbstractGPXReader):
         """
         Constructor. Reads default information that can be read by gpx.
         """
-        #pylint: disable=fixme
-        # FIXME Check if this is best idea to leave parsing in constructor - in scope of performance
-        # for now there is no better way I can find out.
-        # This will go to issues.
         self.__gpx_handle = None
         self.__file_handle = None
         self.set_file_handle(file_name)
@@ -147,8 +143,6 @@ class GPXReader(AbstractGPXReader):
         """
         elevations = []
         for point in self.get_points():
-            # pylint: disable=fixme
-            # TODO fix this with own point implementation in future.
             if isinstance(point, gpxpy.gpx.GPXWaypoint):
                 elevations.append(point.elevation)
             else:
