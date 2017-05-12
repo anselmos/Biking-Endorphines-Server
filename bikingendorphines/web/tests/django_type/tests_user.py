@@ -9,3 +9,6 @@ class UserModelTestCase(GenericModelTestCase):
     """ User Model TestCase """
     cls = User
     fields = ['id', 'name', 'surname', 'weight', 'height', 'bmi']
+
+    def test_bmi_health_name(self):
+        assert False
