@@ -153,3 +153,22 @@ class TestDeleteUser(APIGeneralTestCase):
         self.path = "/api/user/{}/".format(user.id)
         response = self.get_response_user_api(pk_id=user.id)
         self.assertEquals(response.status_code, 204)
+
+
+class TestUpdateUser(APIGeneralTestCase):
+    "UserList tests"
+    def setUp(self):
+        super(self.__class__, self).setUp()
+        self.api = APIRequestFactory().post
+        self.view = UserList.as_view()
+
+    def test_update_user(self):
+        " Tests if making api request updates user with new name"
+
+        user = self.create_user_in_db()
+        self.path = "/api/user/{}/".format(user.id)
+        response = self.get_response_user_api(
+            json.dumps({"name": "newName", "weight": 88, "height": 111}),
+            pk_id=user.id
+        )
+        self.assertEquals(response.status_code, 201)
