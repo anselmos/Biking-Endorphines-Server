@@ -47,6 +47,9 @@ class TestUserList(unittest.TestCase):
         self.user = AuthUser.objects.create_superuser('admin', 'admin@admin.com', 'admin123')
         self.token = Token.objects.get(user_id=self.user.id).key
 
+    def tearDown(self):
+        self.user.delete()
+
     def test_user_get_return_json(self):
         "test if using get returns json data"
 
@@ -57,3 +60,23 @@ class TestUserList(unittest.TestCase):
         force_authenticate(request)
         response = view(request)
         self.assertEquals(response.status_code, 200)
+
+    def test_user_list_return_json_list(self):
+        " Test if setting up user returns user list"
+
+        input_user = User.objects.create(name='Bart', surname="Trab", weight=80, height=175)
+
+        self.client.force_login(user=self.user)
+        view = UserList.as_view()
+        factory = APIRequestFactory()
+        request = factory.get("/api/user/", HTTP_AUTHORIZATION='Token {}'.format(self.token))
+        force_authenticate(request)
+        response = view(request)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(len(response.data), 1)
+        self.assertEquals(response.data[0]['name'], input_user.name)
+        self.assertEquals(response.data[0]['surname'], input_user.surname)
+        self.assertEquals(response.data[0]['weight'], input_user.weight)
+        self.assertEquals(response.data[0]['height'], input_user.height)
+        self.assertEquals(response.data[0]['bmi'], input_user.bmi())
+        self.assertEquals(response.data[0]['bmi_health_name'], input_user.bmi_health_name())
