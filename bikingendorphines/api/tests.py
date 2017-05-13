@@ -146,8 +146,8 @@ class TestDeleteUser(APIGeneralTestCase):
         self.api = APIRequestFactory().delete
         self.view = UserDetail.as_view()
 
-    def test_return_user_object(self):
-        " Tests if making api request returns user object "
+    def test_delete_user(self):
+        " Tests if making api request deletes user with 204"
 
         user = self.create_user_in_db()
         self.path = "/api/user/{}/".format(user.id)
