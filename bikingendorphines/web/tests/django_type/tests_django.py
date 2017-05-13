@@ -20,5 +20,6 @@ class UserTestCase(TestCase):
         """
         bart = User.objects.get(name='Bart')
         trab = User.objects.get(name='Trab')
-        self.assertEqual(bart.bmi(), (80/(175*175)* 10000))
-        self.assertEqual(trab.bmi(), (99/(175*175)* 10000))
+        self.assertEqual(bart.bmi(), 26)
+        self.assertEqual(bart.bmi_health_name(), "Overweight")
+        self.assertEqual(trab.bmi_health_name(), "Obesity")
