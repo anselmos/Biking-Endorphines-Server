@@ -4,17 +4,13 @@ Serializers for API
 from rest_framework import serializers
 from web.models import User
 
-class UserSerializer(serializers.Serializer):
+class UserSerializer(serializers.ModelSerializer):
     """
     User serializer
     """
-    #pylint: disable=invalid-name
-    id = serializers.IntegerField(required=True)
-    #enable
-    name = serializers.CharField(required=False, allow_blank=True, max_length=50)
-    surname = serializers.CharField(required=False, allow_blank=True, max_length=100)
-    weight = serializers.IntegerField(required=False, default=0)
-    height = serializers.IntegerField(required=False, default=0)
+    class Meta:
+        model = User
+        fields = ('id', 'name', 'surname', 'weight', 'height', 'bmi', 'bmi_health_name')
 
     def create(self, validated_data):
         """

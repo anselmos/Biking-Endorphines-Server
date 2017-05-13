@@ -27,7 +27,15 @@ class TestUserSerializer(unittest.TestCase):
         user_serialized = UserSerializer(mocked)
         self.assertEqual(
             (user_serialized.data),
-            {'height': 175, 'surname': u'Somlesna', 'id': None, 'weight': 80, 'name': u'Anselmos'}
+            {
+                'height': 175,
+                'surname': u'Somlesna',
+                'id': None,
+                'weight': 80,
+                'name': u'Anselmos',
+                'bmi': 26,
+                'bmi_health_name': u'Overweight'
+            }
         )
 
 
