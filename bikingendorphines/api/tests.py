@@ -54,11 +54,7 @@ class TestUserList(unittest.TestCase):
         "test if using get returns json data"
 
         self.client.force_login(user=self.user)
-        view = UserList.as_view()
-        factory = APIRequestFactory()
-        request = factory.get("/api/user/", HTTP_AUTHORIZATION='Token {}'.format(self.token))
-        force_authenticate(request)
-        response = view(request)
+        response = self.get_response_user_list()
         self.assertEquals(response.status_code, 200)
 
     def test_user_list_return_json_list(self):
@@ -67,16 +63,23 @@ class TestUserList(unittest.TestCase):
         input_user = User.objects.create(name='Bart', surname="Trab", weight=80, height=175)
 
         self.client.force_login(user=self.user)
+        response = self.get_response_user_list()
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(len(response.data), 1)
+        self.assert_user_object(response.data[0], input_user)
+
+    def assert_user_object(self, input, expected):
+        self.assertEquals(input['name'], expected.name)
+        self.assertEquals(input['surname'], expected.surname)
+        self.assertEquals(input['weight'], expected.weight)
+        self.assertEquals(input['height'], expected.height)
+        self.assertEquals(input['bmi'], expected.bmi())
+        self.assertEquals(input['bmi_health_name'], expected.bmi_health_name())
+
+    def get_response_user_list(self):
         view = UserList.as_view()
         factory = APIRequestFactory()
         request = factory.get("/api/user/", HTTP_AUTHORIZATION='Token {}'.format(self.token))
         force_authenticate(request)
         response = view(request)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(len(response.data), 1)
-        self.assertEquals(response.data[0]['name'], input_user.name)
-        self.assertEquals(response.data[0]['surname'], input_user.surname)
-        self.assertEquals(response.data[0]['weight'], input_user.weight)
-        self.assertEquals(response.data[0]['height'], input_user.height)
-        self.assertEquals(response.data[0]['bmi'], input_user.bmi())
-        self.assertEquals(response.data[0]['bmi_health_name'], input_user.bmi_health_name())
+        return response
