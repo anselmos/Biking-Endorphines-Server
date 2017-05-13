@@ -20,18 +20,23 @@ class APIGeneralTestCase(unittest.TestCase):
         self.client = APIClient()
         self.user = AuthUser.objects.create_superuser('admin', 'admin@admin.com', 'admin123')
         self.token = Token.objects.get(user_id=self.user.id).key
+        self.api = APIRequestFactory().get
 
     def tearDown(self):
         "Removes all AuthUser and Users objects at the end of each test"
         self.user.delete()
         User.objects.all().delete()
 
-    def get_response_user_list(self):
+    def get_response_user_api(self, api_data=None):
         " Creates response for /api/user List get with forcing login with Token-Authentication "
         self.client.force_login(user=self.user)
         view = UserList.as_view()
-        factory = APIRequestFactory()
-        request = factory.get("/api/user/", HTTP_AUTHORIZATION='Token {}'.format(self.token))
+        request = self.api(
+            "/api/user/",
+            api_data,
+            HTTP_AUTHORIZATION='Token {}'.format(self.token),
+            content_type='application/json'
+        )
         force_authenticate(request)
         response = view(request)
         return response
@@ -74,7 +79,7 @@ class TestUserList(APIGeneralTestCase):
         "test if using get returns json data"
 
         self.client.force_login(user=self.user)
-        response = self.get_response_user_list()
+        response = self.get_response_user_api()
         self.assert_status_code(response)
 
     def test_user_list_return_json_list(self):
@@ -83,7 +88,7 @@ class TestUserList(APIGeneralTestCase):
         input_user = User.objects.create(name='Bart', surname="Trab", weight=80, height=175)
 
         self.client.force_login(user=self.user)
-        response = self.get_response_user_list()
+        response = self.get_response_user_api()
         self.assert_status_code(response)
         self.assertEquals(len(response.data), 1)
         self.assert_user_object(response.data[0], input_user)
@@ -94,7 +99,7 @@ class TestUserList(APIGeneralTestCase):
         input_user = User.objects.create(name='Bart', surname="Trab", weight=80, height=175)
         input_user2 = User.objects.create(name='B222art', surname="Trabaaaa", weight=50, height=100)
 
-        response = self.get_response_user_list()
+        response = self.get_response_user_api()
         self.assert_status_code(response)
         self.assertEquals(len(response.data), 2)
         self.assert_user_object(response.data[0], input_user)
@@ -118,15 +123,9 @@ class TestUser(APIGeneralTestCase):
     def test_return_user_object(self):
         " Tests if making api request returns user object "
 
-        view = UserList.as_view()
-        factory = APIRequestFactory()
-        request = factory.post(
-            "/api/user/",
-            json.dumps(
-                {"name":"Test", "surname":"tester1", "weight":88, "height":173}
-            ), HTTP_AUTHORIZATION='Token {}'.format(self.token),
-            content_type='application/json'
+        self.api = APIRequestFactory().post
+        data = json.dumps(
+            {"name":"Test", "surname":"tester1", "weight":88, "height":173}
         )
-        force_authenticate(request)
-        response = view(request)
+        response = self.get_response_user_api(data)
         self.assertEquals(response.status_code, 201)
