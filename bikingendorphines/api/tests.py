@@ -116,14 +116,15 @@ class TestUserList(APIGeneralTestCase):
         self.assertEquals(input_json['bmi_health_name'], expected.bmi_health_name())
 
 
-class TestUser(APIGeneralTestCase):
+class TestPostUser(APIGeneralTestCase):
     "UserList tests"
-
+    def setUp(self):
+        super(self.__class__, self).setUp()
+        self.api = APIRequestFactory().post
 
     def test_return_user_object(self):
         " Tests if making api request returns user object "
 
-        self.api = APIRequestFactory().post
         data = json.dumps(
             {"name":"Test", "surname":"tester1", "weight":88, "height":173}
         )
