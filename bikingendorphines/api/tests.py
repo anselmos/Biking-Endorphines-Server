@@ -140,7 +140,7 @@ class TestPostUser(APIGeneralTestCase):
 
 
 class TestDeleteUser(APIGeneralTestCase):
-    "UserList tests"
+    "User Delete tests"
     def setUp(self):
         super(self.__class__, self).setUp()
         self.api = APIRequestFactory().delete
@@ -156,7 +156,7 @@ class TestDeleteUser(APIGeneralTestCase):
 
 
 class TestUpdateUser(APIGeneralTestCase):
-    "UserList tests"
+    "User Update tests"
     def setUp(self):
         super(self.__class__, self).setUp()
         self.api = APIRequestFactory().post
