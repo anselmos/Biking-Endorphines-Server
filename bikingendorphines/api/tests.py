@@ -13,6 +13,33 @@ from rest_framework.test import APIRequestFactory
 from rest_framework.test import force_authenticate
 
 
+class APIGeneralTestCase(unittest.TestCase):
+    "General Test Case for API"
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user = AuthUser.objects.create_superuser('admin', 'admin@admin.com', 'admin123')
+        self.token = Token.objects.get(user_id=self.user.id).key
+
+    def tearDown(self):
+        "Removes all AuthUser and Users objects at the end of each test"
+        self.user.delete()
+        User.objects.all().delete()
+
+    def get_response_user_list(self):
+        " Creates response for /api/user List get with forcing login with Token-Authentication "
+        self.client.force_login(user=self.user)
+        view = UserList.as_view()
+        factory = APIRequestFactory()
+        request = factory.get("/api/user/", HTTP_AUTHORIZATION='Token {}'.format(self.token))
+        force_authenticate(request)
+        response = view(request)
+        return response
+
+    def assert_status_code(self, response):
+        " Asserts response status code with 200"
+        self.assertEquals(response.status_code, 200)
+
 class TestUserSerializer(unittest.TestCase):
     "UserSerializer tests"
 
@@ -40,18 +67,8 @@ class TestUserSerializer(unittest.TestCase):
         )
 
 
-class TestUserList(unittest.TestCase):
+class TestUserList(APIGeneralTestCase):
     "UserList tests"
-
-    def setUp(self):
-        self.client = APIClient()
-        self.user = AuthUser.objects.create_superuser('admin', 'admin@admin.com', 'admin123')
-        self.token = Token.objects.get(user_id=self.user.id).key
-
-    def tearDown(self):
-        "Removes all AuthUser and Users objects at the end of each test"
-        self.user.delete()
-        User.objects.all().delete()
 
     def test_user_get_return_json(self):
         "test if using get returns json data"
@@ -83,9 +100,6 @@ class TestUserList(unittest.TestCase):
         self.assert_user_object(response.data[0], input_user)
         self.assert_user_object(response.data[1], input_user2)
 
-    def assert_status_code(self, response):
-        " Asserts response status code with 200"
-        self.assertEquals(response.status_code, 200)
 
     def assert_user_object(self, input_json, expected):
         "Asserts response User input json object == expected user model object. "
@@ -96,28 +110,10 @@ class TestUserList(unittest.TestCase):
         self.assertEquals(input_json['bmi'], expected.bmi())
         self.assertEquals(input_json['bmi_health_name'], expected.bmi_health_name())
 
-    def get_response_user_list(self):
-        " Creates response for /api/user List get with forcing login with Token-Authentication "
-        self.client.force_login(user=self.user)
-        view = UserList.as_view()
-        factory = APIRequestFactory()
-        request = factory.get("/api/user/", HTTP_AUTHORIZATION='Token {}'.format(self.token))
-        force_authenticate(request)
-        response = view(request)
-        return response
 
-class TestUser(unittest.TestCase):
+class TestUser(APIGeneralTestCase):
     "UserList tests"
 
-    def setUp(self):
-        self.client = APIClient()
-        self.user = AuthUser.objects.create_superuser('admin', 'admin@admin.com', 'admin123')
-        self.token = Token.objects.get(user_id=self.user.id).key
-
-    def tearDown(self):
-        "Removes all AuthUser and Users objects at the end of each test"
-        self.user.delete()
-        User.objects.all().delete()
 
     def test_return_user_object(self):
         " Tests if making api request returns user object "
