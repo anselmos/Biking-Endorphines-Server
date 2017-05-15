@@ -31,3 +31,20 @@ class TestUserSerializer(unittest.TestCase):
                 'bmi_health_name': u'Overweight'
             }
         )
+
+class TestRouteSerializer(unittest.TestCase):
+
+    def test_route_serialize_as_expected(self):
+        "Tests if Route object serializer with RouteSerializer"
+        input_route = Route()
+        input_route.route_name ="NameOfThisFancyRoute"
+        input_route.avg_route = 19.9
+        input_serialized = RouteSerializer(input_route)
+        self.assertEqual(
+            input_serialized,
+            {
+                'id': None,
+                'route_name': "NameOfThisFancyRoute",
+                'avg_route': 19.9
+            }
+        )
