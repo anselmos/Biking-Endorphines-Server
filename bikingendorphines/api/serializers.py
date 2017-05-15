@@ -2,7 +2,7 @@
 Serializers for API
 """
 from rest_framework import serializers
-from web.models import User
+from web.models import User, Route
 
 class UserSerializer(serializers.ModelSerializer):
     """
@@ -28,3 +28,18 @@ class UserSerializer(serializers.ModelSerializer):
         instance.height = validated_data.get('height', instance.height)
         instance.save()
         return instance
+
+
+class RouteSerializer(serializers.ModelSerializer):
+    """
+    Route serializer
+    """
+    class Meta:
+        model = Route
+        fields = ('id', 'route_name', 'avg_route')
+
+    def create(self, validated_data):
+        """
+        Create and return a new `User` instance, given the validated data.
+        """
+        return Route.objects.create(**validated_data)

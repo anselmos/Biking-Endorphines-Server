@@ -3,7 +3,6 @@ Tests Integration for API
 """
 import unittest
 import json
-from api.serializers import UserSerializer
 from api.views import UserList, UserDetail
 from web.models import User
 from django.contrib.auth.models import User as AuthUser
