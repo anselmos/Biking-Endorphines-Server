@@ -30,3 +30,12 @@ class UserModelTestCase(GenericModelTestCase):
         self.assert_bmi_health(18.6, "Normal weight")
         self.assert_bmi_health(25.0, "Overweight")
         self.assert_bmi_health(30.0, "Obesity")
+
+    def test_height_less_hundred(self):
+        """ tests for height less then hundred if not raises ZeroDivisionError"""
+        self.user.height = 99
+        self.user.weight = 50
+        self.user.name = "under hundred height"
+        self.user.surname = "under fifty weight"
+
+        self.assertEquals(self.user.bmi(), 50)
