@@ -27,7 +27,7 @@ class TestUserSerializer(unittest.TestCase):
                 'id': None,
                 'weight': 80,
                 'name': u'Anselmos',
-                'bmi': 26,
+                'bmi': 26.12,
                 'bmi_health_name': u'Overweight'
             }
         )
