@@ -7,6 +7,7 @@ from web.models import User
 from web.tests.django_type.generics import GenericModelTestCase
 
 
+
 class UserModelTestCase(GenericModelTestCase):
     """ User Model TestCase """
     cls = User
@@ -31,6 +32,7 @@ class UserModelTestCase(GenericModelTestCase):
         self.assert_bmi_health(25.0, "Overweight")
         self.assert_bmi_health(30.0, "Obesity")
 
+
     def test_height_less_hundred(self):
         """ tests for height less then hundred if not raises ZeroDivisionError"""
         self.user.height = 99
@@ -38,4 +40,4 @@ class UserModelTestCase(GenericModelTestCase):
         self.user.name = "under hundred height"
         self.user.surname = "under fifty weight"
 
-        self.assertEquals(self.user.bmi(), 50)
+        self.assertEquals(self.user.bmi(), 51.02)
