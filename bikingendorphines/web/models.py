@@ -24,7 +24,7 @@ class User(models.Model):
         """
         Body Mass Index calculator simplified to number
         """
-        return round((float(self.weight) / (float(self.height)*float(self.height)) ) *10000, 2)
+        return round((float(self.weight) / (float(self.height)*float(self.height))) * 10000, 2)
 
     def bmi_health_name(self):
         """
