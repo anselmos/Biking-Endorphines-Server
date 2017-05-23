@@ -1,9 +1,8 @@
 """
-Tests for API
+Tests Integration for API
 """
 import unittest
 import json
-from api.serializers import UserSerializer
 from api.views import UserList, UserDetail
 from web.models import User
 from django.contrib.auth.models import User as AuthUser
@@ -51,32 +50,6 @@ class APIGeneralTestCase(unittest.TestCase):
     def create_user_in_db(self):
         " Creates new user object in database "
         return User.objects.create(name='Bart', surname="Trab", weight=80, height=175)
-
-class TestUserSerializer(unittest.TestCase):
-    "UserSerializer tests"
-
-    def test_user_serialize_to_json(self):
-        "test if serializing to JSON works"
-
-        mocked = User()
-        mocked.name = "Anselmos"
-        mocked.surname = "Somlesna"
-        mocked.weight = 80
-        mocked.height = 175
-
-        user_serialized = UserSerializer(mocked)
-        self.assertEqual(
-            (user_serialized.data),
-            {
-                'height': 175,
-                'surname': u'Somlesna',
-                'id': None,
-                'weight': 80,
-                'name': u'Anselmos',
-                'bmi': 26,
-                'bmi_health_name': u'Overweight'
-            }
-        )
 
 
 class TestUserList(APIGeneralTestCase):

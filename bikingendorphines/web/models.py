@@ -84,7 +84,7 @@ class RoutePoint(models.Model):
     Route Points relations
     """
     id_route = models.ForeignKey(Route, on_delete=models.CASCADE)
-    id_point = models.ForeignKey(Point, on_delete=models.CASCADE)
+    id_point = models.ForeignKey(Point, on_delete=models.DO_NOTHING)
 
     def __unicode__(self):
         "Returns Route-Point relationship unicode"
