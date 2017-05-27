@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='badge',
             name='name',
-            field=models.CharField(default='tets\x08\x08st\x08\x08t', max_length=50),
+            field=models.CharField(default='TestBadgeDefaultName', max_length=50),
             preserve_default=False,
         ),
     ]
