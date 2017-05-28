@@ -126,8 +126,10 @@ class UserBadge(models.Model):
 
     def __unicode__(self):
         "Returns Badge unicode as name: description "
-        return "User Badge acquired-id: {}: Route-id: {}, active?: {}, badge_acquired_date: {}, "\
+        return "User : {},  Badge acquired-id: {}: "\
+        "Route-id: {}, active?: {}, badge_acquired_date: {}, "\
         "activation_modification_date: {}".format(
+            self.id_user,
             self.id_badge,
             self.id_route,
             self.active,

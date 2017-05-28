@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/user/$', views.UserList.as_view()),
     url(r'^api/user/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
+    url(r'^api/badge/(?P<pk>[0-9]+)/$', views.UserBadgeList.as_view()),
     url(r'^docs/', include_docs_urls(title='API Documentation')),
 ]

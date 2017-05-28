@@ -4,7 +4,7 @@ Tests Integration for API
 import unittest
 import json
 from api.views import UserList, UserDetail, UserBadgeList
-from web.models import User
+from web.models import User, Badge, Route, UserBadge
 from django.contrib.auth.models import User as AuthUser
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
@@ -50,6 +50,28 @@ class APIGeneralTestCase(unittest.TestCase):
     def create_user_in_db(self):
         " Creates new user object in database "
         return User.objects.create(name='Bart', surname="Trab", weight=80, height=175)
+
+    # pylint: disable=no-self-use
+    def create_badge_in_db(self):
+        " Creates new badge object in database "
+        return Badge.objects.create(name='FasterThenUniverse', description='you\'re average lap was faster then previous one')
+
+    # pylint: disable=no-self-use
+    def create_route_in_db(self):
+        " Creates new route object in database "
+        return Route.objects.create(route_name="NameOfThisFancyRoute", avg_route=19.9)
+
+    # pylint: disable=no-self-use
+    def create_user_badge_in_db(self, user, badge, route, active, badge_acquiring_date, date_modify_active):
+        " Creates new UserBadge object in database "
+        return UserBadge.objects.create(
+            id_user = user,
+            id_badge = badge,
+            id_route = route,
+            active = active,
+            badge_acquiring_date = badge_acquiring_date,
+            activation_modification_date = date_modify_active,
+        )
 
 
 class TestUserList(APIGeneralTestCase):
@@ -147,20 +169,40 @@ class TestUpdateUser(APIGeneralTestCase):
         self.assertEquals(response.status_code, 201)
 
 
-class TestUserBadge(APIGeneralTestCase):
+class TestUserBadgeList(APIGeneralTestCase):
     "User Update tests"
     def setUp(self):
         super(self.__class__, self).setUp()
-        self.api = APIRequestFactory().post
         self.view = UserBadgeList.as_view()
 
     def test_update_user(self):
         " Tests if making api request updates user with new name"
 
+        badge = self.create_badge_in_db()
+        route = self.create_route_in_db()
         user = self.create_user_in_db()
-        self.path = "/api/badge/{}/".format(user.id)
+        date_badge_acquired = "2017-02-02T22:00:00"
+        date_badge_activation = "2017-02-02T22:00:00"
+        user_badge = self.create_user_badge_in_db(
+            user,
+            badge,
+            route,
+            True,
+            date_badge_acquired + "+00:00",
+            date_badge_activation + "+00:00"
+        )
+
+        self.path = "/api/badge/{}/".format(user_badge.id)
         response = self.get_response_user_api(
-            json.dumps({"name": "newName", "weight": 88, "height": 111}),
             pk_id=user.id
         )
-        self.assertEquals(response.status_code, 201)
+        self.assertEquals(response.status_code, 200)
+        self.assert_user_badge(response.data[0], user.id, badge.id, route.id, user_badge.active, date_badge_acquired, date_badge_activation)
+
+    def assert_user_badge(self, user_badge_object, user_id, badge_id, route_id, active, badge_acquiring_date, activation_modification_date):
+        self.assertEquals(user_badge_object['id_user'], user_id)
+        self.assertEquals(user_badge_object['id_badge'], badge_id)
+        self.assertEquals(user_badge_object['id_route'], route_id)
+        self.assertEquals(user_badge_object['active'], active)
+        self.assertEquals(user_badge_object['badge_acquiring_date'], unicode(badge_acquiring_date + "Z"))
+        self.assertEquals(user_badge_object['activation_modification_date'], unicode(activation_modification_date + "Z"))
