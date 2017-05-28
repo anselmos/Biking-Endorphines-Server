@@ -3,7 +3,7 @@ Tests Integration for API
 """
 import unittest
 import json
-from api.views import UserList, UserDetail
+from api.views import UserList, UserDetail, UserBadgeList
 from web.models import User
 from django.contrib.auth.models import User as AuthUser
 from rest_framework.authtoken.models import Token
@@ -140,6 +140,25 @@ class TestUpdateUser(APIGeneralTestCase):
 
         user = self.create_user_in_db()
         self.path = "/api/user/{}/".format(user.id)
+        response = self.get_response_user_api(
+            json.dumps({"name": "newName", "weight": 88, "height": 111}),
+            pk_id=user.id
+        )
+        self.assertEquals(response.status_code, 201)
+
+
+class TestUserBadge(APIGeneralTestCase):
+    "User Update tests"
+    def setUp(self):
+        super(self.__class__, self).setUp()
+        self.api = APIRequestFactory().post
+        self.view = UserBadgeList.as_view()
+
+    def test_update_user(self):
+        " Tests if making api request updates user with new name"
+
+        user = self.create_user_in_db()
+        self.path = "/api/badge/{}/".format(user.id)
         response = self.get_response_user_api(
             json.dumps({"name": "newName", "weight": 88, "height": 111}),
             pk_id=user.id
