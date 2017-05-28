@@ -2,7 +2,7 @@
 Serializers for API
 """
 from rest_framework import serializers
-from web.models import User, Route
+from web.models import User, UserBadge, Route
 
 class UserSerializer(serializers.ModelSerializer):
     """
@@ -43,3 +43,26 @@ class RouteSerializer(serializers.ModelSerializer):
         Create and return a new `User` instance, given the validated data.
         """
         return Route.objects.create(**validated_data)
+
+
+class UserBadgeSerializer(serializers.ModelSerializer):
+    """
+    User serializer
+    """
+    class Meta:
+        model = UserBadge
+        fields = (
+            'id',
+            'id_badge',
+            'id_user',
+            'id_route',
+            'active',
+            'badge_acquiring_date',
+            'activation_modification_date'
+        )
+
+    def create(self, validated_data):
+        """
+        Create and return a new `UserBadge` instance, given the validated data.
+        """
+        return UserBadge.objects.create(**validated_data)
