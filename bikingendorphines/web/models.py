@@ -89,3 +89,21 @@ class RoutePoint(models.Model):
     def __unicode__(self):
         "Returns Route-Point relationship unicode"
         return self.id_route
+
+
+class Badge(models.Model):
+    "Badge Model"
+    name = models.CharField(
+        max_length=50,
+        help_text="describes in short name of the badge"
+    )
+
+    description = models.CharField(
+        max_length=256,
+        default="",
+        help_text="More thorough information about badge acquiring (i.e. criteria)"
+    )
+
+    def __unicode__(self):
+        "Returns Badge unicode as name: description "
+        return "{}: {}".format(self.name, self.description)
