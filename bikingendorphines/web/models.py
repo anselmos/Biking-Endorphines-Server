@@ -107,3 +107,30 @@ class Badge(models.Model):
     def __unicode__(self):
         "Returns Badge unicode as name: description "
         return "{}: {}".format(self.name, self.description)
+
+
+class UserBadge(models.Model):
+    "Users acquired Badges!"
+    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    id_badge = models.ForeignKey(Badge, on_delete=models.CASCADE)
+
+    id_route = models.ForeignKey(
+        Route,
+        on_delete=models.CASCADE,
+        help_text="id of route on which badge has been acquired"
+    )
+
+    active = models.BooleanField(default=True)
+    badge_acquiring_date = models.DateTimeField()
+    activation_modification_date = models.DateTimeField()
+
+    def __unicode__(self):
+        "Returns Badge unicode as name: description "
+        return "User Badge acquired-id: {}: Route-id: {}, active?: {}, badge_acquired_date: {}, "\
+        "activation_modification_date: {}".format(
+            self.id_badge,
+            self.id_route,
+            self.active,
+            self.badge_acquiring_date,
+            self.activation_modification_date
+        )
