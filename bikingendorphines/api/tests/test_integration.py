@@ -54,7 +54,10 @@ class APIGeneralTestCase(unittest.TestCase):
     # pylint: disable=no-self-use
     def create_badge_in_db(self):
         " Creates new badge object in database "
-        return Badge.objects.create(name='FasterThenUniverse', description='you\'re average lap was faster then previous one')
+        return Badge.objects.create(
+            name='FasterThenUniverse',
+            description='you\'re average lap was faster then previous one'
+        )
 
     # pylint: disable=no-self-use
     def create_route_in_db(self):
@@ -62,15 +65,16 @@ class APIGeneralTestCase(unittest.TestCase):
         return Route.objects.create(route_name="NameOfThisFancyRoute", avg_route=19.9)
 
     # pylint: disable=no-self-use
-    def create_user_badge_in_db(self, user, badge, route, active, badge_acquiring_date, date_modify_active):
+    # pylint: disable=too-many-arguments
+    def create_user_badge_in_db(self, user, badge, route, active, badge_date, activation_date):
         " Creates new UserBadge object in database "
         return UserBadge.objects.create(
-            id_user = user,
-            id_badge = badge,
-            id_route = route,
-            active = active,
-            badge_acquiring_date = badge_acquiring_date,
-            activation_modification_date = date_modify_active,
+            id_user=user,
+            id_badge=badge,
+            id_route=route,
+            active=active,
+            badge_acquiring_date=badge_date,
+            activation_modification_date=activation_date,
         )
 
 
@@ -197,12 +201,31 @@ class TestUserBadgeList(APIGeneralTestCase):
             pk_id=user.id
         )
         self.assertEquals(response.status_code, 200)
-        self.assert_user_badge(response.data[0], user.id, badge.id, route.id, user_badge.active, date_badge_acquired, date_badge_activation)
+        self.assert_user_badge(
+            response.data[0],
+            user.id,
+            badge.id,
+            route.id,
+            user_badge.active,
+            unicode(date_badge_acquired + "Z"),
+            unicode(date_badge_activation + "Z")
+        )
 
-    def assert_user_badge(self, user_badge_object, user_id, badge_id, route_id, active, badge_acquiring_date, activation_modification_date):
+    # pylint: disable=too-many-arguments
+    def assert_user_badge(
+            self, user_badge_object, user_id, badge_id, route_id,
+            active, badge_acquiring_date, activation_modification_date):
+        """ Asserts user badge object with parameters """
+
         self.assertEquals(user_badge_object['id_user'], user_id)
         self.assertEquals(user_badge_object['id_badge'], badge_id)
         self.assertEquals(user_badge_object['id_route'], route_id)
         self.assertEquals(user_badge_object['active'], active)
-        self.assertEquals(user_badge_object['badge_acquiring_date'], unicode(badge_acquiring_date + "Z"))
-        self.assertEquals(user_badge_object['activation_modification_date'], unicode(activation_modification_date + "Z"))
+        self.assertEquals(
+            user_badge_object['badge_acquiring_date'],
+            badge_acquiring_date
+        )
+        self.assertEquals(
+            user_badge_object['activation_modification_date'],
+            activation_modification_date
+        )
