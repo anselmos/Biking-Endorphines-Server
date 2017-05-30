@@ -46,5 +46,5 @@ class FileUploadView(APIView):
     " A view for file upload "
     parser_classes = (JSONParser,)
 
-    def post(self, request, filename, format=None):
+    def post(self, request, format='json'):
         return Response(request.data)

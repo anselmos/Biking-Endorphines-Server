@@ -3,10 +3,14 @@ Tests Integration for API
 """
 import unittest
 import json
-from api.views import UserList, UserDetail, UserBadgeList
+from api.views import UserList, UserDetail, UserBadgeList, FileUploadView
 from web.models import User, Badge, Route, UserBadge
 from django.contrib.auth.models import User as AuthUser
+# pylint: disable=import-error
+from django.utils.six.moves import StringIO
+# pylint: enable=import-error
 from rest_framework.authtoken.models import Token
+from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import force_authenticate
@@ -28,7 +32,7 @@ class APIGeneralTestCase(unittest.TestCase):
         self.user.delete()
         User.objects.all().delete()
 
-    def get_response_user_api(self, api_data=None, pk_id=None):
+    def get_response_user_api(self, api_data=None, pk_id=None, **kwargs):
         " Creates response for /api/user List get with forcing login with Token-Authentication "
         self.client.force_login(user=self.user)
         request = self.api(
@@ -40,7 +44,7 @@ class APIGeneralTestCase(unittest.TestCase):
         force_authenticate(request)
         if pk_id is not None:
             return self.view(request, pk=pk_id)
-        return self.view(request)
+        return self.view(request, **kwargs)
 
     def assert_status_code(self, response):
         " Asserts response status code with 200"
@@ -229,3 +233,36 @@ class TestUserBadgeList(APIGeneralTestCase):
             user_badge_object['activation_modification_date'],
             activation_modification_date
         )
+
+
+class TestFileUploadView(APIGeneralTestCase):
+    "File Upload tests"
+    def setUp(self):
+        super(self.__class__, self).setUp()
+        self.api = APIRequestFactory().post
+        self.view = FileUploadView.as_view()
+
+    def _create_test_file(self, path):
+        f = open(path, 'w')
+        f.write('test123\n')
+        f.close()
+        f = open(path, 'rb')
+        return {'datafile': f}
+
+    def test_update_user(self):
+        " Tests if making api request updates user with new name"
+
+        import os
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        file_ = open(dir_path + '/samples/routesample.json', 'rb')
+
+        api_data = {'filename':  file_ }
+
+        self.client.credentials(HTTP_AUTHORIZATION='Token {}'.format(self.token))
+        request = APIRequestFactory().post(
+            "/api/file/",
+            api_data,
+            format='json'
+        )
+        response = self.view(request, format='multipart')
+        assert response.status_code == 200
