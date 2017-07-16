@@ -2,7 +2,7 @@
 Serializers for API
 """
 from rest_framework import serializers
-from web.models import User, UserBadge, Route
+from web.models import User, UserBadge, Route, Point
 
 class UserSerializer(serializers.ModelSerializer):
     """
@@ -43,6 +43,57 @@ class RouteSerializer(serializers.ModelSerializer):
         Create and return a new `User` instance, given the validated data.
         """
         return Route.objects.create(**validated_data)
+
+
+class PointListSerializer(serializers.ListSerializer):
+    """
+    Point List serializer
+    """
+
+    def create(self, validated_data):
+        """
+        Create and return list of a new `Point` instances, given the validated data.
+        """
+        points = [Point(**item) for item in validated_data]
+        return Point.objects.bulk_create(points)
+
+    def update(self, instance, validated_data):
+        # Maps for id->instance and id->data item.
+        point_mapping = {point.id: point for point in instance}
+        data_mapping = {item['id']: item for item in validated_data}
+
+        # Perform creations and updates.
+        ret = []
+        for point_id, data in data_mapping.items():
+            point = point_mapping.get(point_id, None)
+            if point is None:
+                ret.append(self.child.create(data))
+            else:
+                ret.append(self.child.update(point, data))
+
+        # Perform deletions.
+        for point_id, point in point_mapping.items():
+            if point_id not in data_mapping:
+                point.delete()
+
+        return ret
+
+
+
+class PointSerializer(serializers.ModelSerializer):
+    """
+    Point serializer
+    """
+    class Meta:
+        model = Point
+        fields = ('id', 'lat', 'lon', 'elevation', 'time')
+        list_serializer_class = PointListSerializer
+
+    def create(self, validated_data):
+        """
+        Create and return a new `Point` instance, given the validated data.
+        """
+        return Point.objects.create(**validated_data)
 
 
 class UserBadgeSerializer(serializers.ModelSerializer):

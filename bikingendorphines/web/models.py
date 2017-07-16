@@ -73,6 +73,7 @@ class Point(models.Model):
     lat = models.FloatField(default=0.0)
     lon = models.FloatField(default=0.0)
     elevation = models.FloatField(default=0.0)
+    time = models.DateTimeField(default="2017-03-03T12:00:00+00:00")
 
     def __unicode__(self):
         "Returns Point unicode"
