@@ -242,15 +242,8 @@ class TestFileUploadView(APIGeneralTestCase):
         self.api = APIRequestFactory().post
         self.view = FileUploadView.as_view()
 
-    def _create_test_file(self, path):
-        f = open(path, 'w')
-        f.write('test123\n')
-        f.close()
-        f = open(path, 'rb')
-        return {'datafile': f}
-
-    def test_update_user(self):
-        " Tests if making api request updates user with new name"
+    def test_json_file(self):
+        " Tests if making api request for uploading json file succeed"
 
         import os
         dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -262,7 +255,8 @@ class TestFileUploadView(APIGeneralTestCase):
         request = APIRequestFactory().post(
             "/api/file/",
             api_data,
-            format='json'
+            format='json',
+            HTTP_AUTHORIZATION='Token {}'.format(self.token),
         )
-        response = self.view(request, format='multipart')
+        response = self.view(request, format='json')
         assert response.status_code == 200
