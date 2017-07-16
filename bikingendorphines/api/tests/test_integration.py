@@ -3,8 +3,8 @@ Tests Integration for API
 """
 import unittest
 import json
-from api.views import UserList, UserDetail, UserBadgeList
-from web.models import User, Badge, Route, UserBadge
+from api.views import UserList, UserDetail, UserBadgeList, FileUploadView, PointView, PointList
+from web.models import User, Badge, Route, UserBadge, Point
 from django.contrib.auth.models import User as AuthUser
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
@@ -27,8 +27,9 @@ class APIGeneralTestCase(unittest.TestCase):
         "Removes all AuthUser and Users objects at the end of each test"
         self.user.delete()
         User.objects.all().delete()
+        Point.objects.all().delete()
 
-    def get_response_user_api(self, api_data=None, pk_id=None):
+    def get_response_user_api(self, api_data=None, pk_id=None, **kwargs):
         " Creates response for /api/user List get with forcing login with Token-Authentication "
         self.client.force_login(user=self.user)
         request = self.api(
@@ -40,7 +41,7 @@ class APIGeneralTestCase(unittest.TestCase):
         force_authenticate(request)
         if pk_id is not None:
             return self.view(request, pk=pk_id)
-        return self.view(request)
+        return self.view(request, **kwargs)
 
     def assert_status_code(self, response):
         " Asserts response status code with 200"
@@ -229,3 +230,97 @@ class TestUserBadgeList(APIGeneralTestCase):
             user_badge_object['activation_modification_date'],
             activation_modification_date
         )
+
+
+class TestFileUploadView(APIGeneralTestCase):
+    "File Upload tests"
+    def setUp(self):
+        super(self.__class__, self).setUp()
+        self.api = APIRequestFactory().post
+        self.view = FileUploadView.as_view()
+
+    @unittest.skip("test not ready")
+    def test_json_file(self):
+        """
+        This test has been setup as skipped temporarily - because it does not make what it should
+        Tests if making api request for uploading json file succeed
+        """
+
+        import os
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        file_ = open(dir_path + '/samples/routesample.json', 'rb')
+
+        api_data = {'filename':  file_}
+
+        self.client.credentials(HTTP_AUTHORIZATION='Token {}'.format(self.token))
+        request = self.api(
+            "/api/file/",
+            api_data,
+            format='json',
+            HTTP_AUTHORIZATION='Token {}'.format(self.token),
+        )
+        response = self.view(request, format='json')
+        assert response.status_code == 202
+
+
+class TestPointView(APIGeneralTestCase):
+    """ Tests for Point View"""
+
+    def setUp(self):
+        super(self.__class__, self).setUp()
+        self.api = APIRequestFactory().post
+        self.view = PointView.as_view()
+        self.path = "/api/point/"
+
+    def test_uploading_one_point(self):
+        " Tests if making api request updates user with new name"
+
+        data = json.dumps(
+            {
+                "lat": "11.22",
+                "lon": "11.33",
+                "time": "2001-01-22T07:05:05Z",
+                "ele": "11.1",
+            }
+        )
+        response = self.get_response_user_api(
+            data
+        )
+        self.assertEquals(response.status_code, 201)
+        all_points = Point.objects.all()
+        self.assertEquals(len(all_points), 1)
+
+
+class TestPointListView(APIGeneralTestCase):
+    """ Tests for List of Points View"""
+
+    def setUp(self):
+        super(self.__class__, self).setUp()
+        self.api = APIRequestFactory().post
+        self.view = PointList.as_view()
+        self.path = "/api/points/"
+
+
+    @unittest.skip("test not ready")
+    def test_uploading_multiple_points(self):
+        " Tests if making api request updates user with new name"
+        data = json.dumps([
+            {
+                "lat": "11.22",
+                "lon": "11.33",
+                "time": "2001-01-22T07:05:05Z",
+                "ele": "11.1",
+            },
+            {
+                "lat": "22.22",
+                "lon": "22.33",
+                "time": "2001-01-22T07:05:05Z",
+                "ele": "22.1",
+            }
+        ])
+        response = self.get_response_user_api(
+            data
+        )
+        self.assertEquals(response.status_code, 200)
+        all_points = Point.objects.all()
+        self.assertEquals(len(all_points), 2)
