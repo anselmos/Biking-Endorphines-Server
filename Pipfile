@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+
+[packages]
+djangorestframework = "==3.6.2"
+pylint = "==1.8.2"
+pylint-django = "==0.7.2"
+Django = "==1.10.6"
+astroid = "==1.5.3"
+parameterized = "*"
+mock = "*"
+gpxpy = "*"
+coreapi = "*"
+
+[requires]
+python_version = "3.6"
