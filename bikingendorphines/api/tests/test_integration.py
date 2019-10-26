@@ -208,8 +208,8 @@ class TestUserBadgeList(APIGeneralTestCase):
             badge.id,
             route.id,
             user_badge.active,
-            unicode(date_badge_acquired + "Z"),
-            unicode(date_badge_activation + "Z")
+            str(date_badge_acquired + "Z"),
+            str(date_badge_activation + "Z")
         )
 
     # pylint: disable=too-many-arguments

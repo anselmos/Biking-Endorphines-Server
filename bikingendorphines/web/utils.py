@@ -132,7 +132,7 @@ class GPXReader(AbstractGPXReader):
             return self.get_track_points()
         elif len(self.__routes) > 0 and self.__routes[item_nb].get_points_no() > 0:
             return self.get_route_points()
-        elif len(self.__waypoints) > 0 and self.__waypoints > 0:
+        elif len(self.__waypoints) > 0 and self.__waypoints:
             return self.get_way_points()
         else:
             return []
