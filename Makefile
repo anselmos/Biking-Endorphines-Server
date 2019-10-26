@@ -1,34 +1,34 @@
 requirements:
-	pip install -r requirements.txt
+	pipenv install
 
 pylint_all: requirements pylint
 
 pylint:
-	pylint --load-plugins pylint_django bikingendorphines/web --rcfile=.pylintrc 
-	pylint --load-plugins pylint_django bikingendorphines/api --rcfile=.pylintrc 
-	pylint --load-plugins pylint_django bikingendorphines/bikingendorphines --rcfile=.pylintrc 
+	pipenv run pylint --load-plugins pylint_django bikingendorphines/web --rcfile=.pylintrc 
+	pipenv run pylint --load-plugins pylint_django bikingendorphines/api --rcfile=.pylintrc 
+	pipenv run pylint --load-plugins pylint_django bikingendorphines/bikingendorphines --rcfile=.pylintrc 
 
 unittest_all: prepare_db unittest
 
 unittest:
-	cd bikingendorphines && python manage.py test
+	cd bikingendorphines && pipenv run python manage.py test
 
 unittest_debug:
-	cd bikingendorphines && python manage.py test -v 2
+	cd bikingendorphines && pipenv run python manage.py test -v 2
 
 prepare_db_all: requirements prepare
 
 prepare_db:
-	python bikingendorphines/manage.py makemigrations
-	python bikingendorphines/manage.py migrate
+	pipenv run python bikingendorphines/manage.py makemigrations
+	pipenv run python bikingendorphines/manage.py migrate
 
 runserver: prepare_db
-	python bikingendorphines/manage.py runserver 0.0.0.0:8000
+	pipenv run python bikingendorphines/manage.py runserver 0.0.0.0:8000
 
-pyreverse: requirements
+pyreverse:
 	rm -rf generated_pyreverse
 	mkdir -p generated_pyreverse
-	pyreverse -AS -o png --project=Biking-Endorphines-Web bikingendorphines/web/
+	pipenv run pyreverse -AS -o png --project=Biking-Endorphines-Web bikingendorphines/web/
 	mv *.png generated_pyreverse/
 
 generate_pyreverse:
