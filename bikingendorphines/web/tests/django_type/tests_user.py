@@ -24,7 +24,7 @@ class UserModelTestCase(GenericModelTestCase):
 
     def test_bmi_health_name(self):
         """ tests for bmi_health_name method """
-        self.assert_bmi_health(-1, None)
+        self.assert_bmi_health(-1, "")
         self.assert_bmi_health(0, "Underweight")
         self.assert_bmi_health(1, "Underweight")
         self.assert_bmi_health(18.5, "Underweight")
@@ -40,4 +40,4 @@ class UserModelTestCase(GenericModelTestCase):
         self.user.name = "under hundred height"
         self.user.surname = "under fifty weight"
 
-        self.assertEquals(self.user.bmi(), 51.02)
+        self.assertEqual(self.user.bmi(), 51.02)
