@@ -7,10 +7,10 @@ name = "pypi"
 
 [packages]
 djangorestframework = "==3.9.1"
-pylint = "==1.8.2"
-pylint-django = "==0.7.2"
+pylint = "==2.4.2"
+pylint-django = {version = "*", extras = ["with_django"]}
 Django = "==1.10.8"
-astroid = "==1.6.6"
+astroid = "==2.3.0"
 parameterized = "*"
 mock = "*"
 gpxpy = "*"
