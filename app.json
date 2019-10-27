@@ -1,0 +1,6 @@
+{
+    "scripts": {
+      "postdeploy": "make prepare_db"
+    },
+    "stack": "heroku-18"
+}
