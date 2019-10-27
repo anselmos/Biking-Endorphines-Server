@@ -14,7 +14,7 @@ class User(models.Model):
     weight = models.IntegerField(default=0)
     height = models.IntegerField(default=0)
 
-    def __unicode__(self):
+    def __str__(self):
         """
         Returns User information when using str/printing
         """
@@ -31,7 +31,7 @@ class User(models.Model):
         BMI Health Name - Returns proper naming for value of BMI
         """
         if self.bmi() < 0:
-            return None
+            return ""
         if self.bmi() >= 0 and self.bmi() <= 18.5:
             return "Underweight"
         if self.bmi() > 18.5 and self.bmi() <= 24.9:
@@ -40,6 +40,7 @@ class User(models.Model):
             return "Overweight"
         if self.bmi() > 29.9:
             return "Obesity"
+        return ""
 
 
 class Route(models.Model):
@@ -49,7 +50,7 @@ class Route(models.Model):
     route_name = models.CharField(max_length=100)
     avg_route = models.FloatField(default=0.0)
 
-    def __unicode__(self):
+    def __str__(self):
         "Returns Route name "
         return self.route_name
 
@@ -61,7 +62,7 @@ class UserRoute(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
     id_route = models.ForeignKey(Route, on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    def __str__(self):
         "Returns User id"
         return self.id_user
 
@@ -75,8 +76,8 @@ class Point(models.Model):
     elevation = models.FloatField(default=0.0)
     time = models.DateTimeField(default="2017-03-03T12:00:00+00:00")
 
-    def __unicode__(self):
-        "Returns Point unicode"
+    def __str__(self):
+        "Returns Point str"
         return str(self.lat) + "" + str(self.lon)
 
 
@@ -87,8 +88,8 @@ class RoutePoint(models.Model):
     id_route = models.ForeignKey(Route, on_delete=models.CASCADE)
     id_point = models.ForeignKey(Point, on_delete=models.DO_NOTHING)
 
-    def __unicode__(self):
-        "Returns Route-Point relationship unicode"
+    def __str__(self):
+        "Returns Route-Point relationship str"
         return self.id_route
 
 
@@ -105,8 +106,8 @@ class Badge(models.Model):
         help_text="More thorough information about badge acquiring (i.e. criteria)"
     )
 
-    def __unicode__(self):
-        "Returns Badge unicode as name: description "
+    def __str__(self):
+        "Returns Badge str as name: description "
         return "{}: {}".format(self.name, self.description)
 
 
@@ -125,8 +126,8 @@ class UserBadge(models.Model):
     badge_acquiring_date = models.DateTimeField()
     activation_modification_date = models.DateTimeField()
 
-    def __unicode__(self):
-        "Returns Badge unicode as name: description "
+    def __str__(self):
+        "Returns Badge str as name: description "
         return "User : {},  Badge acquired-id: {}: "\
         "Route-id: {}, active?: {}, badge_acquired_date: {}, "\
         "activation_modification_date: {}".format(

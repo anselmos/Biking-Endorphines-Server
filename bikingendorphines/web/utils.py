@@ -3,7 +3,7 @@ Utils module that contains all business logic that should not be at model/view o
 """
 import gpxpy
 
-class AbstractGPXReader(object):
+class AbstractGPXReader:
     """
     AbstractGPXReader - An Abstract Class containing most of methods that needs to be implemented.
 
@@ -130,12 +130,11 @@ class GPXReader(AbstractGPXReader):
         """
         if len(self.__tracks) > 0 and self.__tracks[item_nb].get_points_no() > 0:
             return self.get_track_points()
-        elif len(self.__routes) > 0 and self.__routes[item_nb].get_points_no() > 0:
+        if len(self.__routes) > 0 and self.__routes[item_nb].get_points_no() > 0:
             return self.get_route_points()
-        elif len(self.__waypoints) > 0 and self.__waypoints > 0:
+        if len(self.__waypoints) > 0 and self.__waypoints:
             return self.get_way_points()
-        else:
-            return []
+        return []
 
     def get_elevations(self):
         """
@@ -156,10 +155,8 @@ class GPXReader(AbstractGPXReader):
             if elevation:
                 group_elevation[elevation] = elevation
 
-        if len(group_elevation.keys()) == 0:
-            return
-        if len(group_elevation.keys()) == 1:
-            return
+        if len(group_elevation.keys()) == 0 or len(group_elevation.keys()) == 1:
+            return -1
         return min(group_elevation.keys())
 
 class EndomondoGPXReader(GPXReader):

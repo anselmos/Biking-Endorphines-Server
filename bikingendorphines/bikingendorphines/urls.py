@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from api import views
 from rest_framework.documentation import include_docs_urls
+from api import views
 
 #pylint: disable=invalid-name
 urlpatterns = [

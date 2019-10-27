@@ -73,14 +73,14 @@ class BaseGPXReaderTest(unittest.TestCase):
         (DEFAULT_TESTS_EXAMPLES_PATH+'fast_example_empty_points.gpx'),
         (DEFAULT_TESTS_EXAMPLES_PATH+'fast_example_points_no_elevation.gpx'),
     ])
-    def test_given_none_or_empty_elevation_return_none(self, gpxfile=DEFAULT_GPXFILE_SAMPLE):
+    def test_given_none_or_empty_elevation_return_minus_one(self, gpxfile=DEFAULT_GPXFILE_SAMPLE):
         """
         Tests for get_lowest_elevation
         """
         self.gpxreader = GPXReader(gpxfile)
-        self.assert_lowest_elevation_equals(None)
+        self.assert_lowest_elevation_equals(-1)
 
-    def test_given_one_available_elevation_return_none(self):
+    def test_given_one_available_elevation_return_minus_one(self):
         """
         Tests for get_lowest_elevation
         """
@@ -88,7 +88,7 @@ class BaseGPXReaderTest(unittest.TestCase):
             DEFAULT_TESTS_EXAMPLES_PATH + \
             "get_lowest_elevation_one_elevation_available.gpx"
         )
-        self.assert_lowest_elevation_equals(None)
+        self.assert_lowest_elevation_equals(-1)
 
     def test_given_two_different_points_return_lowest(self):
         """
@@ -100,7 +100,7 @@ class BaseGPXReaderTest(unittest.TestCase):
         )
         self.assert_lowest_elevation_equals(102.0)
 
-    def test_given_two_the_same_points_return_none(self):
+    def test_given_two_the_same_points_return_minus_one(self):
         """
         Tests for get_lowest_elevation
         """
@@ -108,9 +108,9 @@ class BaseGPXReaderTest(unittest.TestCase):
             DEFAULT_TESTS_EXAMPLES_PATH + \
             "get_lowest_elevation_two_the_same_points.gpx"
         )
-        self.assert_lowest_elevation_equals(None)
+        self.assert_lowest_elevation_equals(-1)
 
-    def test_given_more_then_two_the_same_points_return_none(self):
+    def test_given_more_then_two_the_same_points_return_minus_one(self):
         """
         Tests for get_lowest_elevation
         """
@@ -118,7 +118,7 @@ class BaseGPXReaderTest(unittest.TestCase):
             DEFAULT_TESTS_EXAMPLES_PATH + \
             "get_lowest_elevation_more_then_two_the_same_points.gpx"
         )
-        self.assert_lowest_elevation_equals(None)
+        self.assert_lowest_elevation_equals(-1)
 
     def test_given_none_and_diff_points_return_minimal_value(self):
         """
