@@ -40,4 +40,4 @@ deploy_gh_pages:
 	bash deploy_gh_pages.sh
 
 setup_pipenv:
-	pipenv --python 3.6"
+	pipenv --python 3.6
