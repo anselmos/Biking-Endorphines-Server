@@ -9,7 +9,8 @@ before_install:
 install:
     - "make setup_pipenv"
     - "make requirements"
-    - "make prepare_db"
+    - "pipenv graph"
+      # - "make prepare_db"
 
 env:
     global:
