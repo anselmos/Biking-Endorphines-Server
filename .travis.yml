@@ -10,7 +10,6 @@ install:
     - "make setup_pipenv"
     - "make requirements"
     - "pipenv graph"
-      # - "make prepare_db"
 
 env:
     global:
@@ -23,7 +22,7 @@ env:
 
 script: 
     - "make $MAKE_TASK"
-    - "make $MAKE_GH_PAGE_TASK"
+    # - "make $MAKE_GH_PAGE_TASK"
 branches:
     only:
         - gh-pages
