@@ -9,7 +9,7 @@ name = "pypi"
 djangorestframework = "==3.9.1"
 pylint = "==2.4.2"
 pylint-django = {version = "*", extras = ["with_django"]}
-Django = "==1.10.8"
+django = "==1.10.8"
 astroid = "==2.3.0"
 parameterized = "*"
 mock = "*"
