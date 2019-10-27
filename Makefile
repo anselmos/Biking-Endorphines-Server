@@ -41,3 +41,6 @@ deploy_gh_pages_all: pyreverse generate_pyreverse deploy_gh_pages
 
 deploy_gh_pages:
 	bash deploy_gh_pages.sh
+
+setup_pipenv:
+	pipenv --python 3.6"
