@@ -16,6 +16,7 @@ mock = "*"
 gpxpy = "*"
 coreapi = "*"
 pytz = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.6"
