@@ -8,6 +8,9 @@ pylint:
 	pipenv run pylint --load-plugins pylint_django bikingendorphines/api --rcfile=.pylintrc 
 	pipenv run pylint --load-plugins pylint_django bikingendorphines/bikingendorphines --rcfile=.pylintrc 
 
+spelling:
+	pipenv run pylint --enable spelling --spelling-dict en_US bikingendorphines/web bikingendorphines/api bikingendorphines/bikingendorphines
+
 unittest_all: prepare_db unittest
 
 unittest:
