@@ -6,7 +6,7 @@ name = "pypi"
 [dev-packages]
 
 [packages]
-djangorestframework = "==3.9.1"
+djangorestframework = "==3.11.2"
 pylint = "==2.4.2"
 pylint-django = {version = "*", extras = ["with_django"]}
 django = "==1.11.28"
